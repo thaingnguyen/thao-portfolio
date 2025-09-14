@@ -1,39 +1,41 @@
 ---
 import ProjectShowcase from './ProjectShowcase.astro';
+import msbQr from '../../images/MSB_qr.png';
+import msbAward from '../../images/MSB_award.jpg';
+import msbBirthday from '../../images/MSB_birthday.jpg';
+import msbTikTok from '../../images/MSB_tiktok.png';
 
 // Data for the client-side projects showcase
 const clientProjects = [
   {
     id: 0,
     title: "MSB: TikTok Channel Launch",
-    media: "https://placehold.co/800x600/000000/FFFFFF?text=TikTok+Channel",
+    media: msbTikTok,
     icon: "tiktok",
-    challenge: "The strategic challenge was to build MSB's presence on TikTok from zero, aiming to capture a new, younger audience segment and establish the bank as a modern, relevant brand on one of Vietnam's most important digital platforms.",
+    challenge: "The strategic challenge was to build MSB's presence on TikTok from zero. The primary business objective was to capture a new, younger audience segment and establish the bank as a modern, relevant brand on one of Vietnam's most important digital platforms.",
     solution: [
-        "Led the entire initiative from initial concept to final launch and performance analysis.",
-        "Managed the competitive agency selection process to find the right creative partner.",
-        "Sourced and managed KOLs, aligning their content with the brand's strategic goals.",
-        "Finalized the content strategy and oversaw the end-to-end production of 40 videos tailored for a Gen Z audience."
+        "<b>Agency & Vendor Management:</b> I organized a competitive pitch to select and onboard the lead creative agency. I also directly sourced and managed multiple KOLs (like Phúc Thành and Việt Anh Pípo) to build credibility and reach.",
+        "<b>Strategic Planning:</b> I finalized the master content strategy and production plan with the agency, which included a slate of 40 videos designed to resonate with a Gen Z audience.",
+        "<b>Execution Oversight:</b> I managed the agency's end-to-end video production process to ensure all content was high-quality, on-brand, and delivered according to the timeline.",
     ],
     role: "Project Lead",
     impact: [
-      { value: "20.3k", label: "Followers Acquired" },
+      { value: "20.3K", label: "Followers Acquired" },
       { value: "38.7M", label: "Total Video Views" },
       { value: "203%", label: "of Follower KPI" }
     ],
-    preview: { value: "38.7M", label: "Total Views" }
+    preview: { value: "38.7M", label: "Total Views", title: "TikTok Launch" }
   },
   {
     id: 1,
-    title: `"Tài chính easy, săn quà tiền tỉ"`,
-    media: "https://placehold.co/800x600/1E90FF/FFFFFF?text=QR+Payment+Campaign",
+    title: `Driving Customer Growth with the "Tài chính easy, săn quà tiền tỉ" Campaign`,
+    media: msbQr,
     icon: "qrcode",
-    challenge: "The challenge was twofold: drive mass adoption of the bank's QR payment feature and reinforce MSB's long-term brand message of 'sustainable development.'",
+    challenge: 'The challenge was twofold: drive mass adoption of the bank\'s QR payment feature and reinforce MSB\'s long-term brand message of "sustainable development."',
     solution: [
-        "Developed a social media strategy that linked the convenience of QR payments to the core brand message of 'sustainable development.'",
-        "Crafted the central concept: positioning the 'simplified lifestyle' of QR payments as a form of modern, sustainable living.",
-        "Executed the campaign through a high-profile music video and a gamified lucky draw to drive engagement and adoption.",
-        "Managed all social media channels to ensure consistent messaging and community interaction throughout the campaign."
+        "<b>Strategic Concept:</b> We developed a creative concept that linked the product to the brand by positioning the \"simplified lifestyle\" enabled by easy QR payments as a form of modern, sustainable living. This concept aligned the campaign's creative direction with the bank's core brand strategy.",
+        "<b>Campaign Execution:</b> As the social media lead, I collaborated with our agency to ensure this strategic message was at the heart of the campaign. The concept was brought to life through a high-profile music video and a gamified lucky draw that made the \"easy lifestyle\" message engaging and aspirational.",
+        "<b>Product Focus:</b> All social media activities were designed to drive users to the core promoted product: QR scan and billing on the mobile app.",
     ],
     role: "Social Media Strategy Lead",
     impact: [
@@ -41,19 +43,19 @@ const clientProjects = [
       { value: "~$6.5M", label: "Avg. Monthly Balance" },
       { value: "164M+", label: "Total Impressions" }
     ],
-    preview: { value: "~300k", label: "New Accounts" }
+    preview: { value: "~300k", label: "New Accounts", title: "Mega Promotion" }
   },
   {
     id: 2,
-    title: `"Bank of the Year" Award`,
-    media: "https://placehold.co/800x600/FFD700/000000?text=Bank+of+the+Year",
+    title: `Securing the "Bank of the Year" Award from The Banker`,
+    media: msbAward,
     icon: "award",
     challenge: "Despite applying for several consecutive years, MSB had not won this prestigious award. The challenge was to understand past failures and craft a submission that would finally meet the judges' rigorous standards.",
     solution: [
-        "Took the initiative to contact the award organizers directly to seek feedback on previous unsuccessful submissions and gain a deeper, more nuanced understanding of their specific judging criteria.",
-        "Based on these new insights, I then led the end-to-end project of compiling the new submission.",
-        "Coordinated with multiple internal departments to gather data and achievements that specifically addressed the clarified criteria.",
-        "Synthesized the information into a new, compelling narrative that strategically highlighted MSB's strengths in the areas the judges valued most."
+        "<b>Took the initiative</b> to contact the award organizers directly to seek feedback on previous unsuccessful submissions and gain a deeper, more nuanced understanding of their specific judging criteria.",
+        "<b>Based on these new insights,</b> I then led the end-to-end project of compiling the new submission.",
+        "<b>Coordinated with multiple internal departments</b> to gather data and achievements that specifically addressed the clarified criteria.",
+        "<b>Synthesized the information</b> into a new, compelling narrative that strategically highlighted MSB's strengths in the areas the judges valued most."
     ],
     role: "Project Lead, Award Submission",
     impact: [
@@ -61,19 +63,18 @@ const clientProjects = [
       { value: "Global", label: "Prestige by The Banker" },
       { value: "Asset", label: "For Future Marketing" }
     ],
-    preview: { value: "Winner", label: "Bank of the Year '23" }
+    preview: { value: "Winner", label: "Bank of the Year '23", title: "Award Hunting" }
   },
   {
     id: 3,
     title: `MSB 32nd Birthday: "The Dazzling 32-Year Journey"`,
-    media: "https://placehold.co/800x600/FF69B4/FFFFFF?text=32nd+Anniversary",
+    media: msbBirthday,
     icon: "birthday-cake",
     challenge: "The challenge was to celebrate MSB's 32nd anniversary with a major brand campaign that would increase brand awareness and foster deep engagement with both customers and employees.",
     solution: [
-        "Orchestrated a large-scale, integrated brand campaign to celebrate the bank's 32nd anniversary.",
-        "Managed a major roadshow through key cities (Hanoi and HCMC) to generate public buzz and media attention.",
-        "Led internal engagement activities, including an online dance challenge, a talent show, and a run contest to foster employee morale and brand advocacy.",
-        "Oversaw the production of a new animation video and the execution of supporting digital ad campaigns."
+        "<b>External Activation:</b> The centerpiece was a large-scale roadshow combined with a bus tour through the heart of Hanoi and Ho Chi Minh City, offering immersive activities for passengers and creating a high-visibility brand moment.",
+        "<b>Internal Engagement:</b> To foster employee pride and participation, I managed a suite of internal activities, including an online dance cover challenge, a talent show, and an online run contest.",
+        "<b>Supporting Content:</b> The campaign was supported by a new animation video for the MSB song and a steady stream of content with digital ads on the official Facebook fanpage.",
     ],
     role: "Campaign Lead",
     impact: [
@@ -81,7 +82,7 @@ const clientProjects = [
       { value: "3M+", label: "Music Video Views" },
       { value: "1,400", label: "Direct Engagements" }
     ],
-    preview: { value: "#1", label: "Share of Voice" }
+    preview: { value: "#1", label: "Discussed Bank", title: "MSB 32nd Birthday"}
   }
 ];
 ---
@@ -89,8 +90,8 @@ const clientProjects = [
 <ProjectShowcase 
   {...Astro.props}
   showcaseId="client-projects"
-  title="Client-Side Impact"
-  subtitle="A showcase of key campaigns and their business results."
+  title="Client-Side Showcase: MSB"
+  subtitle="The Stories Behind the Wins"
   projects={clientProjects} 
   highlightColor="blue"
 />

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { getImage, type ImageMetadata } from 'astro:assets';
 
 // Component Props
 interface Props {
@@ -19,6 +20,40 @@ const {
 } = Astro.props;
 
 const initialProject = projects[0];
+
+// Normalize images so both local (ImageMetadata) and remote strings
+// resolve to an object with a consistent `attributes` shape.
+const processedImages = await Promise.all(projects.map(async (p) => {
+  const media = p.media?.default ?? p.media;
+
+  // Local import (ImageMetadata)
+  if (typeof media === 'object' && media !== null && 'src' in media) {
+    const img = await getImage({
+      src: media as ImageMetadata,
+      width: 800,
+      height: 600,
+      format: 'webp',
+    });
+
+    // Ensure a consistent attributes object exists
+    const attrs = (img as any).attributes ?? {};
+    return {
+      ...img,
+      attributes: {
+        ...attrs,
+        src: img.src,
+        width: attrs.width ?? (img as any).width ?? 800,
+        height: attrs.height ?? (img as any).height ?? 600,
+      },
+    };
+  }
+
+  // Remote URL string
+  const src = String(media);
+  return { src, attributes: { src, width: 800, height: 600 } };
+}));
+
+const firstImage = processedImages[0];
 
 // Define color classes based on the highlightColor prop
 const colorClasses = {
@@ -68,7 +103,7 @@ const colors = colorClasses[highlightColor];
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                     
                     <!-- Content Area (Left) -->
-                    <div class="text-gray-300 order-2 lg:order-1 flex flex-col">
+                    <div id={`${showcaseId}-left-content`} class="text-gray-300 order-2 lg:order-1 flex flex-col">
                         <p id={`${showcaseId}-featured-role`} class:list={["bg-gray-700/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start", colors.icon]}>{initialProject.role}</p>
                         <h3 id={`${showcaseId}-featured-title`} class="text-2xl sm:text-3xl font-bold text-white mb-2">{initialProject.title}</h3>
                         
@@ -79,7 +114,7 @@ const colors = colorClasses[highlightColor];
                             <h4 class:list={["font-semibold mb-2", colors.text]}>My Approach & Solution</h4>
                             <ul id={`${showcaseId}-featured-solution`} class="list-disc list-inside space-y-2 text-base leading-relaxed">
                                 {initialProject.solution.map(item => (
-                                    <li>{item}</li>
+                                    <li set:html={item} />
                                 ))}
                             </ul>
                         </div>
@@ -87,7 +122,7 @@ const colors = colorClasses[highlightColor];
 
                     <!-- Media Area (Right) -->
                     <div class="w-full h-auto aspect-video rounded-lg overflow-hidden bg-gray-700 order-1 lg:order-2">
-                        <img id={`${showcaseId}-featured-media`} src={initialProject.media} alt={`${initialProject.title} media`} class="w-full h-full object-cover">
+                        <img id={`${showcaseId}-featured-media`} {...firstImage.attributes} alt={`${initialProject.title} media`} class="w-full h-full object-cover">
                     </div>
 
                 </div>
@@ -111,7 +146,7 @@ const colors = colorClasses[highlightColor];
                         </div>
                         <p class="text-2xl font-bold text-white">{project.preview.value}</p>
                         <p class="text-xs text-gray-400 mb-2">{project.preview.label}</p>
-                        <h4 class="text-sm font-semibold text-white leading-tight">{project.title.split(':')[0]}</h4>
+                        <h4 class="text-sm font-semibold text-white leading-tight">{project.preview.title}</h4>
                     </div>
                 ))}
             </div>
@@ -136,7 +171,7 @@ const colors = colorClasses[highlightColor];
   }
 </style>
 
-<script define:vars={{ projects, showcaseId, highlightColor }}>
+<script define:vars={{ projects, showcaseId, highlightColor, processedImages }}>
   document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById(showcaseId);
     if (!container) return;
@@ -163,17 +198,89 @@ const colors = colorClasses[highlightColor];
     const featuredImpact = container.querySelector(`#${showcaseId}-featured-impact`);
     const featuredProjectContainer = container.querySelector(`#${showcaseId}-featured-project-container`);
     const previewNav = container.querySelector(`#${showcaseId}-preview-nav`);
+    const leftContent = container.querySelector(`#${showcaseId}-left-content`);
+    const descriptionWrapper = container.querySelector(`#${showcaseId}-description-wrapper`);
 
     const previewCards = previewNav.querySelectorAll('.preview-card');
 
+    function computeStableHeights() {
+      // Stabilize the left content column (role, title, description)
+      if (leftContent) {
+        const measure = document.createElement('div');
+        measure.style.position = 'absolute';
+        measure.style.visibility = 'hidden';
+        measure.style.pointerEvents = 'none';
+        measure.style.left = '-10000px';
+        measure.style.top = '0';
+        measure.style.width = `${leftContent.clientWidth}px`;
+        document.body.appendChild(measure);
+
+        let maxLeftHeight = 0;
+        projects.forEach((p) => {
+          measure.innerHTML = `
+            <p class="bg-gray-700/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start">${p.role}</p>
+            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${p.title}</h3>
+            <div>
+              <h4 class="font-semibold mb-2">The Challenge</h4>
+              <p class="mb-6 text-base leading-relaxed">${p.challenge}</p>
+              <h4 class="font-semibold mb-2">My Approach & Solution</h4>
+              <ul class="list-disc list-inside space-y-2 text-base leading-relaxed">
+                ${(p.solution || []).map((item) => `<li>${item}</li>`).join('')}
+              </ul>
+            </div>
+          `;
+          const h = measure.offsetHeight;
+          if (h > maxLeftHeight) maxLeftHeight = h;
+        });
+        document.body.removeChild(measure);
+        leftContent.style.minHeight = `${Math.ceil(maxLeftHeight)}px`;
+      }
+
+      // Stabilize the top impact metrics grid
+      if (featuredImpact) {
+        const measureImpact = document.createElement('div');
+        measureImpact.style.position = 'absolute';
+        measureImpact.style.visibility = 'hidden';
+        measureImpact.style.pointerEvents = 'none';
+        measureImpact.style.left = '-10000px';
+        measureImpact.style.top = '0';
+        measureImpact.style.width = `${featuredImpact.clientWidth}px`;
+        measureImpact.className = 'grid grid-cols-3 gap-4 sm:gap-8 text-center';
+        document.body.appendChild(measureImpact);
+
+        let maxImpactHeight = 0;
+        projects.forEach((p) => {
+          measureImpact.innerHTML = (p.impact || []).map((metric) => `
+            <div>
+              <p class="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tighter">${metric.value}</p>
+              <p class="text-gray-400 text-xs sm:text-sm mt-1">${metric.label}</p>
+            </div>
+          `).join('');
+          const h = measureImpact.offsetHeight;
+          if (h > maxImpactHeight) maxImpactHeight = h;
+        });
+        document.body.removeChild(measureImpact);
+        featuredImpact.style.minHeight = `${Math.ceil(maxImpactHeight)}px`;
+      }
+    }
+
     function updateFeaturedProject(projectId) {
-      const project = projects.find(p => p.id === parseInt(projectId));
-      if (!project) return;
+      const projectIndex = projects.findIndex(p => p.id === parseInt(projectId));
+      if (projectIndex === -1) return;
+      
+      const project = projects[projectIndex];
+      const processedImage = processedImages[projectIndex];
+
+      if (!project || !processedImage) return;
 
       featuredProjectContainer.style.opacity = '0';
       setTimeout(() => {
-        featuredMedia.src = project.media;
+        // The 'attributes' object will exist for both local and remote images
+        for (const [key, value] of Object.entries(processedImage.attributes)) {
+          featuredMedia.setAttribute(key, value);
+        }
         featuredMedia.alt = `${project.title} media`;
+        
         featuredTitle.textContent = project.title;
         featuredRole.textContent = project.role;
         featuredChallenge.textContent = project.challenge;
@@ -181,7 +288,7 @@ const colors = colorClasses[highlightColor];
         featuredSolution.innerHTML = '';
         project.solution.forEach(item => {
             const li = document.createElement('li');
-            li.textContent = item;
+            li.innerHTML = item;
             featuredSolution.appendChild(li);
         });
 
@@ -211,6 +318,14 @@ const colors = colorClasses[highlightColor];
       card.addEventListener('click', () => {
         updateFeaturedProject(parseInt(card.dataset.id));
       });
+    });
+
+    // Compute stable heights initially and on resize to prevent layout shift
+    computeStableHeights();
+    let resizeTO;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTO);
+      resizeTO = setTimeout(computeStableHeights, 150);
     });
   });
 </script>
