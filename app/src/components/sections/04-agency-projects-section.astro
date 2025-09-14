@@ -1,19 +1,92 @@
 ---
+import ProjectShowcase from './ProjectShowcase.astro';
+
+// Data for the agency-side projects showcase
+const agencyProjects = [
+    {
+        id: 0,
+        title: "Mộc Châu Milk - Brand Trust Refresh",
+        media: "https://placehold.co/800x600/66CDAA/FFFFFF?text=Moc+Chau+Milk",
+        icon: "leaf",
+        challenge: "The strategic challenge was to bring a fresh approach to the Mộc Châu Milk 'Social Always-On' project. The goal was to move beyond standard corporate content to build deeper trust with consumers and combat widespread fear of 'fake milk.'",
+        solution: [
+            "Identified the core insight that trust could be built through authenticity and transparency.",
+            "Led the implementation of a new 'real shooting' video series to educate consumers and showcase the genuine production process.",
+            "Managed the entire project lifecycle, from strategy proposal to production house management, creative oversight, client coordination, and performance tracking."
+        ],
+        role: "Account Executive & Project Lead",
+        impact: [
+            { value: "+110%", label: "Organic Reach" },
+            { value: "3x", label: "YoY Follower Growth" },
+            { value: "Higher", label: "Platform Engagement" }
+        ],
+        preview: { value: "+110%", label: "Organic Reach" }
+    },
+    {
+        id: 1,
+        title: "Panasonic - Market Expansion",
+        media: "https://placehold.co/800x600/4682B4/FFFFFF?text=Panasonic+Event",
+        icon: "map-marker-alt",
+        challenge: "The challenge was to promote Panasonic's top-load washing machines in the Mekong Delta, a new region, and create a scalable model for expansion.",
+        solution: [
+            "Managed the end-to-end execution of a two-phase Go-to-Market strategy.",
+            "Led the pilot phase in the Mekong Delta, creating interactive event experiences with live product demonstrations.",
+            "Oversaw the successful 5-province program expansion in the Southeastern region, implementing a hyper-localized approach with customized visuals and outreach strategies."
+        ],
+        role: "Account Executive / Project Lead",
+        impact: [
+            { value: "4,200+", label: "Visitors (Phase 1)" },
+            { value: "5,200+", label: "Visitors (Phase 2)" },
+            { value: "2", label: "Key Regions Established" }
+        ],
+        preview: { value: "9,400+", label: "Total Visitors" }
+    },
+    {
+        id: 2,
+        title: "Toshiba - Product Launch",
+        media: "https://placehold.co/800x600/FF6347/FFFFFF?text=Toshiba+Launch",
+        icon: "box-open",
+        challenge: "The challenge was to successfully introduce two new Toshiba products to the Vietnamese market quickly and effectively before the peak Tết season.",
+        solution: [
+            "Managed a cohesive, high-engagement launch strategy with a 'Facebook-first' approach for detailed features, expanded by TikTok, KOLs, and PR.",
+            "Orchestrated a complex 3-week communication roadmap, coordinating KVs, iTVCs, PR articles, and content from 8 KOLs.",
+            "Ensured the campaign was completed on its tight timeline through agile project management and close coordination between the agency and client."
+        ],
+        role: "Account Executive / Project Lead",
+        impact: [
+            { value: "20M+", label: "Cross-Channel Reach" },
+            { value: "8M+", label: "Video Views" },
+            { value: "30K+", label: "Engagements" }
+        ],
+        preview: { value: "20M+", label: "Total Reach" }
+    },
+    {
+        id: 3,
+        title: `PNJ - Music Video Sponsorship`,
+        media: "https://placehold.co/800x600/DDA0DD/000000?text=PNJ+Music+Video",
+        icon: "music",
+        challenge: "The challenge was to manage a high-profile music video sponsorship, aligning three distinct creative stakeholder groups—a top musician, popular singers, and a production house—to ensure an authentic, on-brand final product.",
+        solution: [
+            "Acted as the central hub, managing the complex relationships between PNJ, a top musician (Khắc Hưng), popular singers (Lyly and Anh Tú), and the production house (Antiantiart).",
+            "Mediated between PNJ and the musician to find a shared creative direction that met both brand and artistic goals.",
+            "Led the talent scouting process, strategically selecting singers to capitalize on their 'real couple' media buzz.",
+            "Managed the competitive pitch process to select the ideal production house."
+        ],
+        role: "Account Executive",
+        impact: [
+            { value: "Smooth", label: "On-Time Delivery" },
+            { value: "Organic", label: "Media Buzz Generated" },
+            { value: "On-Brand", label: "Vision Aligned" }
+        ],
+        preview: { value: "Success", label: "MV Sponsorship" }
+    }
+];
 ---
-<section id="agency-showcase" class="min-h-screen bg-gray-900 py-20 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <h2 class="text-4xl font-extrabold text-center text-cyan-400 mb-2">Agency Showcase</h2>
-    <p class="text-xl text-center text-gray-300 mb-12">Data-driven campaigns with measurable results.</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-gray-800 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Campaign Project 1</p>
-      </div>
-      <div class="bg-gray-800 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Campaign Project 2</p>
-      </div>
-      <div class="bg-gray-800 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Campaign Project 3</p>
-      </div>
-    </div>
-  </div>
-</section>
+
+<ProjectShowcase 
+  showcaseId="agency-showcase"
+  title="Agency-Side Impact"
+  subtitle="A showcase of key campaigns and their business results."
+  projects={agencyProjects} 
+  highlightColor="pink"
+/>

@@ -1,0 +1,216 @@
+---
+import { Icon } from 'astro-icon/components';
+
+// Component Props
+interface Props {
+  showcaseId: string;
+  title: string;
+  subtitle: string;
+  projects: any[]; // Define a more specific type if possible
+  highlightColor?: 'blue' | 'pink';
+}
+
+const { 
+  showcaseId,
+  title,
+  subtitle,
+  projects,
+  highlightColor = 'blue' // Default to blue
+} = Astro.props;
+
+const initialProject = projects[0];
+
+// Define color classes based on the highlightColor prop
+const colorClasses = {
+  blue: {
+    text: 'text-blue-500',
+    border: 'border-blue-500',
+    shadow: 'impact-text-shadow-blue',
+    icon: 'text-blue-400'
+  },
+  pink: {
+    text: 'text-pink-500',
+    border: 'border-pink-500',
+    shadow: 'impact-text-shadow-pink',
+    icon: 'text-pink-400'
+  }
+};
+
+const colors = colorClasses[highlightColor];
+---
+
+<!-- Showcase Section -->
+<section id={showcaseId} class="bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Section Header -->
+        <header class="text-center mb-12">
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-white">{title}</h2>
+            <p class="text-gray-400 mt-4 text-lg">{subtitle}</p>
+        </header>
+
+        <!-- Main Carousel Section -->
+        <div id={`${showcaseId}-carousel-container`} class="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+            
+            <!-- Featured Project Display -->
+            <div id={`${showcaseId}-featured-project-container`} class="p-6 sm:p-8 lg:p-12 transition-opacity duration-300 ease-in-out">
+                
+                <!-- Impact Section (Top Row) -->
+                <div id={`${showcaseId}-featured-impact`} class="grid grid-cols-3 gap-4 sm:gap-8 mb-8 md:mb-12 text-center">
+                    {initialProject.impact.map(metric => (
+                        <div>
+                            <p class:list={["text-3xl sm:text-4xl lg:text-6xl font-black tracking-tighter", colors.text, colors.shadow]}>{metric.value}</p>
+                            <p class="text-gray-400 text-xs sm:text-sm mt-1">{metric.label}</p>
+                        </div>
+                    ))}
+                </div>
+
+                <!-- Details Section (Bottom Row) -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+                    
+                    <!-- Content Area (Left) -->
+                    <div class="text-gray-300 order-2 lg:order-1 flex flex-col">
+                        <p id={`${showcaseId}-featured-role`} class:list={["bg-gray-700/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start", colors.icon]}>{initialProject.role}</p>
+                        <h3 id={`${showcaseId}-featured-title`} class="text-2xl sm:text-3xl font-bold text-white mb-2">{initialProject.title}</h3>
+                        
+                        <div id={`${showcaseId}-description-wrapper`} style="min-height: 300px;">
+                            <h4 class:list={["font-semibold mb-2", colors.text]}>The Challenge</h4>
+                            <p id={`${showcaseId}-featured-challenge`} class="mb-6 text-base leading-relaxed">{initialProject.challenge}</p>
+                            
+                            <h4 class:list={["font-semibold mb-2", colors.text]}>My Approach & Solution</h4>
+                            <ul id={`${showcaseId}-featured-solution`} class="list-disc list-inside space-y-2 text-base leading-relaxed">
+                                {initialProject.solution.map(item => (
+                                    <li>{item}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Media Area (Right) -->
+                    <div class="w-full h-auto aspect-video rounded-lg overflow-hidden bg-gray-700 order-1 lg:order-2">
+                        <img id={`${showcaseId}-featured-media`} src={initialProject.media} alt={`${initialProject.title} media`} class="w-full h-full object-cover">
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Preview Navigation -->
+            <div id={`${showcaseId}-preview-nav`} class="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-700/50 border-t border-gray-800">
+                {projects.map((project, index) => (
+                    <div 
+                        class:list={[
+                            "preview-card", "p-4", "cursor-pointer", "transition-colors", 
+                            "duration-200", "border-t-4", "text-center",
+                            index === 0 
+                                ? ["active-card", colors.border, "bg-gray-700"] 
+                                : "border-transparent bg-gray-900/50 hover:bg-gray-800/50"
+                        ]}
+                        data-id={project.id}
+                    >
+                        <div class:list={["w-full flex justify-center mb-2", colors.icon]}>
+                          <Icon name={project.icon} class="w-6 h-6" />
+                        </div>
+                        <p class="text-2xl font-bold text-white">{project.preview.value}</p>
+                        <p class="text-xs text-gray-400 mb-2">{project.preview.label}</p>
+                        <h4 class="text-sm font-semibold text-white leading-tight">{project.title.split(':')[0]}</h4>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
+
+<style define:vars={{ blueColor: '#3b82f6', pinkColor: '#ec4899' }}>
+  .active-card.border-blue-500 {
+      border-color: var(--blueColor);
+      background-color: rgba(55, 65, 81, 0.5);
+  }
+  .active-card.border-pink-500 {
+      border-color: var(--pinkColor);
+      background-color: rgba(55, 65, 81, 0.5);
+  }
+  .impact-text-shadow-blue {
+      text-shadow: 0 2px 15px rgba(59, 130, 246, 0.5);
+  }
+  .impact-text-shadow-pink {
+      text-shadow: 0 2px 15px rgba(236, 72, 153, 0.5);
+  }
+</style>
+
+<script define:vars={{ projects, showcaseId, highlightColor }}>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById(showcaseId);
+    if (!container) return;
+
+    const colorClasses = {
+      blue: {
+        text: 'text-blue-500',
+        border: 'border-blue-500',
+        shadow: 'impact-text-shadow-blue'
+      },
+      pink: {
+        text: 'text-pink-500',
+        border: 'border-pink-500',
+        shadow: 'impact-text-shadow-pink'
+      }
+    };
+    const colors = colorClasses[highlightColor];
+
+    const featuredMedia = container.querySelector(`#${showcaseId}-featured-media`);
+    const featuredTitle = container.querySelector(`#${showcaseId}-featured-title`);
+    const featuredChallenge = container.querySelector(`#${showcaseId}-featured-challenge`);
+    const featuredSolution = container.querySelector(`#${showcaseId}-featured-solution`);
+    const featuredRole = container.querySelector(`#${showcaseId}-featured-role`);
+    const featuredImpact = container.querySelector(`#${showcaseId}-featured-impact`);
+    const featuredProjectContainer = container.querySelector(`#${showcaseId}-featured-project-container`);
+    const previewNav = container.querySelector(`#${showcaseId}-preview-nav`);
+
+    const previewCards = previewNav.querySelectorAll('.preview-card');
+
+    function updateFeaturedProject(projectId) {
+      const project = projects.find(p => p.id === parseInt(projectId));
+      if (!project) return;
+
+      featuredProjectContainer.style.opacity = '0';
+      setTimeout(() => {
+        featuredMedia.src = project.media;
+        featuredMedia.alt = `${project.title} media`;
+        featuredTitle.textContent = project.title;
+        featuredRole.textContent = project.role;
+        featuredChallenge.textContent = project.challenge;
+
+        featuredSolution.innerHTML = '';
+        project.solution.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = item;
+            featuredSolution.appendChild(li);
+        });
+
+        featuredImpact.innerHTML = '';
+        project.impact.forEach(metric => {
+          const impactEl = document.createElement('div');
+          impactEl.innerHTML = `
+            <p class="text-3xl sm:text-4xl lg:text-6xl font-black ${colors.text} ${colors.shadow} tracking-tighter">${metric.value}</p>
+            <p class="text-gray-400 text-xs sm:text-sm mt-1">${metric.label}</p>
+          `;
+          featuredImpact.appendChild(impactEl);
+        });
+        featuredProjectContainer.style.opacity = '1';
+      }, 300);
+
+      previewCards.forEach(card => {
+        card.classList.remove('active-card', colorClasses.blue.border, colorClasses.pink.border, 'bg-gray-700');
+        card.classList.add('border-transparent', 'bg-gray-900/50', 'hover:bg-gray-800/50');
+        if (parseInt(card.dataset.id) === projectId) {
+          card.classList.add('active-card', colors.border, 'bg-gray-700');
+          card.classList.remove('hover:bg-gray-800/50');
+        }
+      });
+    }
+
+    previewCards.forEach(card => {
+      card.addEventListener('click', () => {
+        updateFeaturedProject(parseInt(card.dataset.id));
+      });
+    });
+  });
+</script>

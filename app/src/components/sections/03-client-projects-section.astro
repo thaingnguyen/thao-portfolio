@@ -1,19 +1,95 @@
 ---
+import ProjectShowcase from './ProjectShowcase.astro';
+
+// Data for the client-side projects showcase
+const clientProjects = [
+  {
+    id: 0,
+    title: "MSB: TikTok Channel Launch",
+    media: "https://placehold.co/800x600/000000/FFFFFF?text=TikTok+Channel",
+    icon: "tiktok",
+    challenge: "The strategic challenge was to build MSB's presence on TikTok from zero, aiming to capture a new, younger audience segment and establish the bank as a modern, relevant brand on one of Vietnam's most important digital platforms.",
+    solution: [
+        "Led the entire initiative from initial concept to final launch and performance analysis.",
+        "Managed the competitive agency selection process to find the right creative partner.",
+        "Sourced and managed KOLs, aligning their content with the brand's strategic goals.",
+        "Finalized the content strategy and oversaw the end-to-end production of 40 videos tailored for a Gen Z audience."
+    ],
+    role: "Project Lead",
+    impact: [
+      { value: "20.3k", label: "Followers Acquired" },
+      { value: "38.7M", label: "Total Video Views" },
+      { value: "203%", label: "of Follower KPI" }
+    ],
+    preview: { value: "38.7M", label: "Total Views" }
+  },
+  {
+    id: 1,
+    title: `"Tài chính easy, săn quà tiền tỉ"`,
+    media: "https://placehold.co/800x600/1E90FF/FFFFFF?text=QR+Payment+Campaign",
+    icon: "qrcode",
+    challenge: "The challenge was twofold: drive mass adoption of the bank's QR payment feature and reinforce MSB's long-term brand message of 'sustainable development.'",
+    solution: [
+        "Developed a social media strategy that linked the convenience of QR payments to the core brand message of 'sustainable development.'",
+        "Crafted the central concept: positioning the 'simplified lifestyle' of QR payments as a form of modern, sustainable living.",
+        "Executed the campaign through a high-profile music video and a gamified lucky draw to drive engagement and adoption.",
+        "Managed all social media channels to ensure consistent messaging and community interaction throughout the campaign."
+    ],
+    role: "Social Media Strategy Lead",
+    impact: [
+      { value: "~300k", label: "New Accounts Acquired" },
+      { value: "~$6.5M", label: "Avg. Monthly Balance" },
+      { value: "164M+", label: "Total Impressions" }
+    ],
+    preview: { value: "~300k", label: "New Accounts" }
+  },
+  {
+    id: 2,
+    title: `"Bank of the Year" Award`,
+    media: "https://placehold.co/800x600/FFD700/000000?text=Bank+of+the+Year",
+    icon: "award",
+    challenge: "Despite applying for several consecutive years, MSB had not won this prestigious award. The challenge was to understand past failures and craft a submission that would finally meet the judges' rigorous standards.",
+    solution: [
+        "Took the initiative to contact the award organizers directly to seek feedback on previous unsuccessful submissions and gain a deeper, more nuanced understanding of their specific judging criteria.",
+        "Based on these new insights, I then led the end-to-end project of compiling the new submission.",
+        "Coordinated with multiple internal departments to gather data and achievements that specifically addressed the clarified criteria.",
+        "Synthesized the information into a new, compelling narrative that strategically highlighted MSB's strengths in the areas the judges valued most."
+    ],
+    role: "Project Lead, Award Submission",
+    impact: [
+      { value: "Winner", label: "Bank of the Year 2023" },
+      { value: "Global", label: "Prestige by The Banker" },
+      { value: "Asset", label: "For Future Marketing" }
+    ],
+    preview: { value: "Winner", label: "Bank of the Year '23" }
+  },
+  {
+    id: 3,
+    title: `MSB 32nd Birthday: "The Dazzling 32-Year Journey"`,
+    media: "https://placehold.co/800x600/FF69B4/FFFFFF?text=32nd+Anniversary",
+    icon: "birthday-cake",
+    challenge: "The challenge was to celebrate MSB's 32nd anniversary with a major brand campaign that would increase brand awareness and foster deep engagement with both customers and employees.",
+    solution: [
+        "Orchestrated a large-scale, integrated brand campaign to celebrate the bank's 32nd anniversary.",
+        "Managed a major roadshow through key cities (Hanoi and HCMC) to generate public buzz and media attention.",
+        "Led internal engagement activities, including an online dance challenge, a talent show, and a run contest to foster employee morale and brand advocacy.",
+        "Oversaw the production of a new animation video and the execution of supporting digital ad campaigns."
+    ],
+    role: "Campaign Lead",
+    impact: [
+      { value: "#1", label: "Share of Voice" },
+      { value: "3M+", label: "Music Video Views" },
+      { value: "1,400", label: "Direct Engagements" }
+    ],
+    preview: { value: "#1", label: "Share of Voice" }
+  }
+];
 ---
-<section id="client-showcase" class="min-h-screen bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
-  <div class="max-w-7xl mx-auto">
-    <h2 class="text-4xl font-extrabold text-center text-pink-500 mb-2">Client Showcase</h2>
-    <p class="text-xl text-center text-gray-300 mb-12">Inspiring creative that captivates audiences.</p>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div class="bg-gray-700 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Client Story 1</p>
-      </div>
-      <div class="bg-gray-700 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Client Story 2</p>
-      </div>
-      <div class="bg-gray-700 rounded-lg shadow-lg p-6 h-64 flex items-center justify-center">
-        <p class="text-gray-400">Client Story 3</p>
-      </div>
-    </div>
-  </div>
-</section>
+
+<ProjectShowcase 
+  showcaseId="client-showcase"
+  title="Client-Side Impact"
+  subtitle="A showcase of key campaigns and their business results."
+  projects={clientProjects} 
+  highlightColor="blue"
+/>
