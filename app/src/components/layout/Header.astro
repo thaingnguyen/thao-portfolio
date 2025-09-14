@@ -1,0 +1,136 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const navLinks = [
+  { href: '#journey', text: 'Journey' },
+  { href: '#client-projects', text: 'Client Projects' },
+  { href: '#agency-projects', text: 'Agency Projects' },
+  { href: '#skills', text: 'Skills' },
+  { href: '#connect', text: 'Connect' },
+];
+---
+
+<div id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 opacity-0">
+  <!-- Desktop Nav -->
+  <nav id="sticky-nav" class="hidden fixed md:block w-full top-0 z-50 bg-gray-900/70 backdrop-blur-lg border-b border-gray-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-center h-16">
+          <div class="flex items-center space-x-8">
+            {navLinks.map(link => (
+              <a href={link.href} class="nav-link text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-md text-sm font-medium">{link.text}</a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  </div>
+
+<!-- Mobile Floating Nav Button -->
+<div id="mobile-nav-button-wrapper" class="nav-container md:hidden fixed top-4 right-4 z-50">
+  <button id="mobile-menu-button" type="button" class="bg-gray-800/80 backdrop-blur-sm inline-flex items-center justify-center p-3 rounded-full text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white" aria-controls="mobile-menu-overlay" aria-expanded="false">
+    <span class="sr-only">Open main menu</span>
+    <Icon id="menu-icon" name="bars" class="h-6 w-6" />
+    <svg id="close-icon" class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  </button>
+</div>
+
+<!-- Mobile Menu Overlay -->
+<div id="mobile-menu-overlay" class="md:hidden fixed inset-0 z-40 bg-gray-900/95 backdrop-blur-md">
+  <div class="flex flex-col items-center justify-center h-full space-y-6">
+    {navLinks.map(link => (
+      <a href={link.href} class="nav-link text-gray-300 hover:text-white text-2xl font-medium">{link.text}</a>
+    ))}
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const header = document.getElementById('main-header');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenuOverlay = document.getElementById('mobile-menu-overlay');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id]');
+
+    // Header fade on scroll
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > window.innerHeight * 0.8) { // 80% of hero section
+        header.style.opacity = '1';
+      } else {
+        header.style.opacity = '0';
+      }
+    });
+
+    // Mobile menu toggle
+    mobileMenuButton.addEventListener('click', () => {
+      const isMenuOpen = mobileMenuOverlay.classList.contains('open');
+      mobileMenuButton.setAttribute('aria-expanded', !isMenuOpen);
+      mobileMenuOverlay.classList.toggle('open');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+
+    // Smooth scrolling and close mobile menu
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+
+        if (targetSection) {
+          targetSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Close mobile menu if open
+        if (mobileMenuOverlay.classList.contains('open')) {
+          mobileMenuOverlay.classList.remove('open');
+          menuIcon.classList.remove('hidden');
+          closeIcon.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+
+    // Active link highlighting on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+          });
+        }
+      });
+    }, { rootMargin: "-50% 0px -50% 0px" });
+
+    sections.forEach(section => {
+      observer.observe(section);
+    });
+  });
+</script>
+
+<style>
+  #main-header {
+    transition: opacity 0.3s ease-in-out;
+  }
+  .nav-link.active {
+    color: #60a5fa; 
+    font-weight: 700;
+  }
+  #mobile-menu-overlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      transform: translateY(-10px);
+  }
+  #mobile-menu-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+  }
+</style>

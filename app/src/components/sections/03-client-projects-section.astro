@@ -87,7 +87,8 @@ const clientProjects = [
 ---
 
 <ProjectShowcase 
-  showcaseId="client-showcase"
+  {...Astro.props}
+  showcaseId="client-projects"
   title="Client-Side Impact"
   subtitle="A showcase of key campaigns and their business results."
   projects={clientProjects} 
