@@ -12,7 +12,7 @@ const navLinks = [
 
 <div id="main-header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 opacity-0">
   <!-- Desktop Nav -->
-  <nav id="sticky-nav" class="hidden fixed md:block w-full top-0 z-50 bg-surface-alt/70 backdrop-blur-lg border-b border-strong">
+  <nav id="sticky-nav" class="hidden fixed md:block w-full top-0 z-50 bg-surface-alt/70 backdrop-blur-lg border-b shadow-md border-transparent">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-center h-16">
           <div class="flex items-center space-x-8">
@@ -119,7 +119,7 @@ const navLinks = [
     transition: opacity 0.3s ease-in-out;
   }
   .nav-link.active {
-    color: rgb(var(--rgb-accent-primary)); 
+    color: rgb(var(--rgb-accent-secondary)); 
     font-weight: 700;
   }
   #mobile-menu-overlay {
