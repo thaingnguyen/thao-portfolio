@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check:palette": "rg \"#[0-9a-fA-F]{3,6}\" src/components"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.13",

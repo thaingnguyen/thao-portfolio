@@ -25,6 +25,16 @@ There's nothing special about `src/components/`, but that's where we like to put
 
 Any static assets, like images, can be placed in the `public/` directory.
 
+## 🎨 Theme Tokens
+
+Color usage is centralized through semantic tokens:
+
+- `src/styles/global.css` defines the palette with CSS variables (e.g. `--color-surface`, `--color-accent-primary`).
+- `src/styles/global.css` configures Tailwind via `@theme`, exposing utilities like `bg-surface-alt`, `text-foreground-muted`, and `text-accent-primary`.
+- Components should rely on those tokens/utilities instead of hard-coded hex values or default Tailwind color names. Run `rg '#[0-9a-fA-F]' src` to ensure new literals aren't introduced.
+
+This makes it easy to re-theme the site by overriding the shared variables (including future light/dark modes) without touching component markup.
+
 ## 🧞 Commands
 
 All commands are run from the root of the project, from a terminal:

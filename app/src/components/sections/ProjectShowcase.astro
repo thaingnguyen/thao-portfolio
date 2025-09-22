@@ -58,16 +58,16 @@ const firstImage = processedImages[0];
 // Define color classes based on the highlightColor prop
 const colorClasses = {
   blue: {
-    text: 'text-blue-500',
-    border: 'border-blue-500',
-    shadow: 'impact-text-shadow-blue',
-    icon: 'text-blue-400'
+    text: 'text-accent-primary-strong',
+    border: 'border-accent-primary-strong',
+    shadow: 'impact-text-shadow-primary',
+    icon: 'text-accent-primary'
   },
   pink: {
-    text: 'text-pink-500',
-    border: 'border-pink-500',
-    shadow: 'impact-text-shadow-pink',
-    icon: 'text-pink-400'
+    text: 'text-accent-secondary',
+    border: 'border-accent-secondary',
+    shadow: 'impact-text-shadow-secondary',
+    icon: 'text-accent-secondary'
   }
 };
 
@@ -75,16 +75,16 @@ const colors = colorClasses[highlightColor];
 ---
 
 <!-- Showcase Section -->
-<section id={showcaseId} class="bg-gray-800 py-20 px-4 sm:px-6 lg:px-8">
+<section id={showcaseId} class="bg-surface-elevated py-20 px-4 sm:px-6 lg:px-8">
     <div class="max-w-7xl mx-auto">
         <!-- Section Header -->
         <header class="text-center mb-12">
-            <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-white">{title}</h2>
-            <p class="text-gray-400 mt-4 text-lg">{subtitle}</p>
+            <h2 class="text-4xl md:text-5xl font-bold tracking-tight text-foreground">{title}</h2>
+            <p class="text-foreground-muted mt-4 text-lg">{subtitle}</p>
         </header>
 
         <!-- Main Carousel Section -->
-        <div id={`${showcaseId}-carousel-container`} class="bg-gray-900 rounded-2xl shadow-2xl overflow-hidden">
+        <div id={`${showcaseId}-carousel-container`} class="bg-surface-alt rounded-2xl shadow-2xl overflow-hidden">
             
             <!-- Featured Project Display -->
             <div id={`${showcaseId}-featured-project-container`} class="p-6 sm:p-8 lg:p-12 transition-opacity duration-300 ease-in-out">
@@ -94,7 +94,7 @@ const colors = colorClasses[highlightColor];
                     {initialProject.impact.map(metric => (
                         <div>
                             <p class:list={["text-3xl sm:text-4xl lg:text-6xl font-black tracking-tighter", colors.text, colors.shadow]}>{metric.value}</p>
-                            <p class="text-gray-400 text-xs sm:text-sm mt-1">{metric.label}</p>
+                            <p class="text-foreground-muted text-xs sm:text-sm mt-1">{metric.label}</p>
                         </div>
                     ))}
                 </div>
@@ -103,16 +103,16 @@ const colors = colorClasses[highlightColor];
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                     
                     <!-- Content Area (Left) -->
-                    <div id={`${showcaseId}-left-content`} class="text-gray-300 order-2 lg:order-1 flex flex-col">
-                        <p id={`${showcaseId}-featured-role`} class:list={["bg-gray-700/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start", colors.icon]}>{initialProject.role}</p>
-                        <h3 id={`${showcaseId}-featured-title`} class="text-2xl sm:text-3xl font-bold text-white mb-2">{initialProject.title}</h3>
+                    <div id={`${showcaseId}-left-content`} class="text-foreground-secondary order-2 lg:order-1 flex flex-col">
+                        <p id={`${showcaseId}-featured-role`} class:list={["bg-surface-overlay/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start", colors.icon]}>{initialProject.role}</p>
+                        <h3 id={`${showcaseId}-featured-title`} class="text-2xl sm:text-3xl font-bold text-foreground mb-2">{initialProject.title}</h3>
                         
                         <div id={`${showcaseId}-description-wrapper`} style="min-height: 300px;">
                             <h4 class:list={["font-semibold mb-2", colors.text]}>The Challenge</h4>
-                            <p id={`${showcaseId}-featured-challenge`} class="mb-6 text-base leading-relaxed">{initialProject.challenge}</p>
+                            <p id={`${showcaseId}-featured-challenge`} class="mb-6 text-base leading-relaxed text-foreground-muted">{initialProject.challenge}</p>
                             
                             <h4 class:list={["font-semibold mb-2", colors.text]}>My Approach & Solution</h4>
-                            <ul id={`${showcaseId}-featured-solution`} class="list-disc list-inside space-y-2 text-base leading-relaxed">
+                            <ul id={`${showcaseId}-featured-solution`} class="list-disc list-inside space-y-2 text-base leading-relaxed text-foreground-muted">
                                 {initialProject.solution.map(item => (
                                     <li set:html={item} />
                                 ))}
@@ -121,7 +121,7 @@ const colors = colorClasses[highlightColor];
                     </div>
 
                     <!-- Media Area (Right) -->
-                    <div class="w-full h-auto aspect-video rounded-lg overflow-hidden bg-gray-700 order-1 lg:order-2">
+                    <div class="w-full h-auto aspect-video rounded-lg overflow-hidden bg-surface-overlay order-1 lg:order-2">
                         <img id={`${showcaseId}-featured-media`} {...firstImage.attributes} alt={`${initialProject.title} media`} class="w-full h-full object-cover">
                     </div>
 
@@ -129,24 +129,24 @@ const colors = colorClasses[highlightColor];
             </div>
 
             <!-- Preview Navigation -->
-            <div id={`${showcaseId}-preview-nav`} class="grid grid-cols-2 md:grid-cols-4 gap-px bg-gray-700/50 border-t border-gray-800">
+            <div id={`${showcaseId}-preview-nav`} class="grid grid-cols-2 md:grid-cols-4 gap-px bg-surface-overlay/50 border-t border-strong">
                 {projects.map((project, index) => (
                     <div 
                         class:list={[
                             "preview-card", "p-4", "cursor-pointer", "transition-colors", 
                             "duration-200", "border-t-4", "text-center",
                             index === 0 
-                                ? ["active-card", colors.border, "bg-gray-700"] 
-                                : "border-transparent bg-gray-900/50 hover:bg-gray-800/50"
+                                ? ["active-card", colors.border, "bg-surface-overlay"] 
+                                : "border-transparent bg-surface-alt/50 hover:bg-surface-elevated/50"
                         ]}
                         data-id={project.id}
                     >
                         <div class:list={["w-full flex justify-center mb-2", colors.icon]}>
                           <Icon name={project.icon} class="w-6 h-6" />
                         </div>
-                        <p class="text-2xl font-bold text-white">{project.preview.value}</p>
-                        <p class="text-xs text-gray-400 mb-2">{project.preview.label}</p>
-                        <h4 class="text-sm font-semibold text-white leading-tight">{project.preview.title}</h4>
+                        <p class="text-2xl font-bold text-foreground">{project.preview.value}</p>
+                        <p class="text-xs text-foreground-muted mb-2">{project.preview.label}</p>
+                        <h4 class="text-sm font-semibold text-foreground leading-tight">{project.preview.title}</h4>
                     </div>
                 ))}
             </div>
@@ -154,20 +154,15 @@ const colors = colorClasses[highlightColor];
     </div>
 </section>
 
-<style define:vars={{ blueColor: '#3b82f6', pinkColor: '#ec4899' }}>
-  .active-card.border-blue-500 {
-      border-color: var(--blueColor);
-      background-color: rgba(55, 65, 81, 0.5);
+<style>
+  .active-card {
+      background-color: rgb(var(--rgb-surface-overlay) / 0.5);
   }
-  .active-card.border-pink-500 {
-      border-color: var(--pinkColor);
-      background-color: rgba(55, 65, 81, 0.5);
+  .impact-text-shadow-primary {
+      text-shadow: 0 2px 15px rgb(var(--rgb-accent-primary-strong) / 0.5);
   }
-  .impact-text-shadow-blue {
-      text-shadow: 0 2px 15px rgba(59, 130, 246, 0.5);
-  }
-  .impact-text-shadow-pink {
-      text-shadow: 0 2px 15px rgba(236, 72, 153, 0.5);
+  .impact-text-shadow-secondary {
+      text-shadow: 0 2px 15px rgb(var(--rgb-accent-secondary) / 0.5);
   }
 </style>
 
@@ -178,14 +173,14 @@ const colors = colorClasses[highlightColor];
 
     const colorClasses = {
       blue: {
-        text: 'text-blue-500',
-        border: 'border-blue-500',
-        shadow: 'impact-text-shadow-blue'
+        text: 'text-accent-primary-strong',
+        border: 'border-accent-primary-strong',
+        shadow: 'impact-text-shadow-primary'
       },
       pink: {
-        text: 'text-pink-500',
-        border: 'border-pink-500',
-        shadow: 'impact-text-shadow-pink'
+        text: 'text-accent-secondary',
+        border: 'border-accent-secondary',
+        shadow: 'impact-text-shadow-secondary'
       }
     };
     const colors = colorClasses[highlightColor];
@@ -218,13 +213,13 @@ const colors = colorClasses[highlightColor];
         let maxLeftHeight = 0;
         projects.forEach((p) => {
           measure.innerHTML = `
-            <p class="bg-gray-700/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start">${p.role}</p>
-            <h3 class="text-2xl sm:text-3xl font-bold text-white mb-2">${p.title}</h3>
+            <p class="bg-surface-overlay/50 inline-block px-3 py-1 rounded-md text-sm mb-6 self-start">${p.role}</p>
+            <h3 class="text-2xl sm:text-3xl font-bold text-foreground mb-2">${p.title}</h3>
             <div>
               <h4 class="font-semibold mb-2">The Challenge</h4>
-              <p class="mb-6 text-base leading-relaxed">${p.challenge}</p>
+              <p class="mb-6 text-base leading-relaxed text-foreground-muted">${p.challenge}</p>
               <h4 class="font-semibold mb-2">My Approach & Solution</h4>
-              <ul class="list-disc list-inside space-y-2 text-base leading-relaxed">
+              <ul class="list-disc list-inside space-y-2 text-base leading-relaxed text-foreground-muted">
                 ${(p.solution || []).map((item) => `<li>${item}</li>`).join('')}
               </ul>
             </div>
@@ -253,7 +248,7 @@ const colors = colorClasses[highlightColor];
           measureImpact.innerHTML = (p.impact || []).map((metric) => `
             <div>
               <p class="text-3xl sm:text-4xl lg:text-6xl font-black tracking-tighter">${metric.value}</p>
-              <p class="text-gray-400 text-xs sm:text-sm mt-1">${metric.label}</p>
+              <p class="text-foreground-muted text-xs sm:text-sm mt-1">${metric.label}</p>
             </div>
           `).join('');
           const h = measureImpact.offsetHeight;
@@ -297,7 +292,7 @@ const colors = colorClasses[highlightColor];
           const impactEl = document.createElement('div');
           impactEl.innerHTML = `
             <p class="text-3xl sm:text-4xl lg:text-6xl font-black ${colors.text} ${colors.shadow} tracking-tighter">${metric.value}</p>
-            <p class="text-gray-400 text-xs sm:text-sm mt-1">${metric.label}</p>
+            <p class="text-foreground-muted text-xs sm:text-sm mt-1">${metric.label}</p>
           `;
           featuredImpact.appendChild(impactEl);
         });
@@ -305,11 +300,11 @@ const colors = colorClasses[highlightColor];
       }, 300);
 
       previewCards.forEach(card => {
-        card.classList.remove('active-card', colorClasses.blue.border, colorClasses.pink.border, 'bg-gray-700');
-        card.classList.add('border-transparent', 'bg-gray-900/50', 'hover:bg-gray-800/50');
+        card.classList.remove('active-card', colorClasses.blue.border, colorClasses.pink.border, 'bg-surface-overlay');
+        card.classList.add('border-transparent', 'bg-surface-alt/50', 'hover:bg-surface-elevated/50');
         if (parseInt(card.dataset.id) === projectId) {
-          card.classList.add('active-card', colors.border, 'bg-gray-700');
-          card.classList.remove('hover:bg-gray-800/50');
+          card.classList.add('active-card', colors.border, 'bg-surface-overlay');
+          card.classList.remove('hover:bg-surface-elevated/50');
         }
       });
     }

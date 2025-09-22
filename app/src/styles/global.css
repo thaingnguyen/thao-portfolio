@@ -1,15 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #1A202C;
-  --foreground: #FFFFFF;
+  /* Core palette stored as space-separated RGB for easy reuse with alpha */
+  --rgb-surface: 26 32 44;
+  --rgb-surface-alt: 17 24 39;
+  --rgb-surface-elevated: 31 41 55;
+  --rgb-surface-overlay: 55 65 81;
+  --rgb-surface-hero: 13 17 23;
+
+  --rgb-border-subtle: 55 65 81;
+  --rgb-border-strong: 75 85 99;
+
+  --rgb-text-primary: 255 255 255;
+  --rgb-text-secondary: 209 213 219;
+  --rgb-text-muted: 156 163 175;
+
+  --rgb-accent-primary: 96 165 250;
+  --rgb-accent-primary-strong: 59 130 246;
+  --rgb-accent-secondary: 236 72 153;
+  --rgb-accent-tertiary: 231 60 126;
+  --rgb-accent-quaternary: 35 166 213;
+  --rgb-accent-quinary: 238 119 82;
+  --rgb-accent-senary: 35 213 171;
+
+  --rgb-glow-primary: 66 153 225;
+  --rgb-glow-secondary: 236 72 153;
+
+  /* Gradient helpers */
+  --gradient-hero-angle: 180deg;
+  --gradient-hero-from: var(--rgb-accent-tertiary);
+  --gradient-hero-to: var(--rgb-accent-quaternary);
+  --gradient-inspiration-angle: -45deg;
+  --gradient-inspiration-stops: var(--rgb-accent-quinary), var(--rgb-accent-tertiary), var(--rgb-accent-quaternary), var(--rgb-accent-senary);
+}
+
+@theme {
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Poppins', sans-serif;
+
+  --color-surface: rgb(var(--rgb-surface));
+  --color-surface-alt: rgb(var(--rgb-surface-alt));
+  --color-surface-elevated: rgb(var(--rgb-surface-elevated));
+  --color-surface-overlay: rgb(var(--rgb-surface-overlay));
+  --color-surface-hero: rgb(var(--rgb-surface-hero));
+
+  --color-foreground: rgb(var(--rgb-text-primary));
+  --color-foreground-secondary: rgb(var(--rgb-text-secondary));
+  --color-foreground-muted: rgb(var(--rgb-text-muted));
+
+  --color-accent-primary: rgb(var(--rgb-accent-primary));
+  --color-accent-primary-strong: rgb(var(--rgb-accent-primary-strong));
+  --color-accent-secondary: rgb(var(--rgb-accent-secondary));
+  --color-accent-tertiary: rgb(var(--rgb-accent-tertiary));
+  --color-accent-quaternary: rgb(var(--rgb-accent-quaternary));
+  --color-accent-quinary: rgb(var(--rgb-accent-quinary));
+  --color-accent-senary: rgb(var(--rgb-accent-senary));
+
+  --color-glow-primary: rgb(var(--rgb-glow-primary));
+  --color-glow-secondary: rgb(var(--rgb-glow-secondary));
+
+  --color-subtle: rgb(var(--rgb-border-subtle));
+  --color-strong: rgb(var(--rgb-border-strong));
+
+  --shadow-glow-primary: 0 0 15px 2px rgb(var(--rgb-glow-primary) / 0.6);
+  --shadow-glow-primary-strong: 0 0 25px 5px rgb(var(--rgb-glow-primary) / 0.9);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: rgb(var(--rgb-surface));
+  color: rgb(var(--rgb-text-primary));
   font-family: var(--font-sans);
   scroll-behavior: smooth;
 }
