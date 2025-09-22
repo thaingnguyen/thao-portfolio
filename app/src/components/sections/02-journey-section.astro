@@ -11,7 +11,7 @@ import { journeyData } from '../../content/journey';
         <!-- Timeline container -->
         <div class="relative">
             <!-- The connecting line for DESKTOP -->
-            <div class="hidden md:block absolute top-[57px] left-0 w-full h-px bg-surface-overlay"></div>
+            <div class="hidden md:block absolute top-[57px] left-0 w-full h-px bg-foreground-muted border-none"></div>
             
             <div class="grid grid-cols-1 md:grid-cols-4 gap-y-12 md:gap-y-0 md:gap-x-8">
                 
@@ -21,14 +21,14 @@ import { journeyData } from '../../content/journey';
                     <div class="md:hidden flex items-start gap-x-4">
                         <!-- Mobile dot and line -->
                         <div class="flex flex-col items-center">
-                        <div class={`timeline-dot w-3.5 h-3.5 bg-accent-primary-strong rounded-full ${index === journeyData.length - 1 ? 'present-dot' : ''}`}></div>
-                            {index < journeyData.length - 1 && <div class="w-px h-full bg-surface-overlay mt-2"></div>}
+                        <div class={`timeline-dot w-3.5 h-3.5 bg-accent-primary rounded-full ${index === journeyData.length - 1 ? 'present-dot' : ''}`}></div>
+                            {index < journeyData.length - 1 && <div class="w-px h-full bg-foreground-muted mt-2"></div>}
                         </div>
                         <!-- Mobile card content -->
                         <div class="w-full -mt-1">
                             <h4 class="font-semibold text-foreground-secondary">{item.title}</h4>
                             <p class="text-sm text-foreground-muted mb-3">{item.date}</p>
-                            <div class="bg-surface-elevated/50 border border-subtle/50 p-6 rounded-lg shadow-lg w-full text-left">
+                            <div class="bg-surface-alt border-t-4 border-accent-primary p-6 rounded-lg shadow-lg w-full text-left">
                                 <p class="text-sm text-foreground-muted">{item.company}</p>
                                 <h3 class="text-xl font-bold text-accent-primary tracking-tight">{item.role}</h3>
                                 <p class="mt-2 text-foreground-muted leading-relaxed">{item.description}</p>
@@ -40,10 +40,10 @@ import { journeyData } from '../../content/journey';
                     <div class="hidden md:block text-center z-10">
                         <h4 class="font-semibold text-foreground-secondary">{item.title}</h4>
                         <p class="text-sm text-foreground-muted">{item.date}</p>
-                        <div class={`timeline-dot mt-2 w-3.5 h-3.5 bg-accent-primary-strong rounded-full mx-auto ${index === journeyData.length - 1 ? 'present-dot' : ''}`}></div>
+                        <div class={`timeline-dot mt-2 w-3.5 h-3.5 bg-accent-primary rounded-full mx-auto ${index === journeyData.length - 1 ? 'present-dot' : ''}`}></div>
                     </div>
                     <div class="hidden md:block mt-16 w-full h-full">
-                        <div class="bg-surface-elevated/50 border border-subtle/50 p-6 rounded-lg shadow-lg w-full h-full text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-glow-primary hover:border-strong">
+                        <div class="bg-surface-alt border-t-4 border-accent-primary p-6 rounded-lg shadow-lg w-full h-full text-left transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-glow-primary hover:border-strong">
                             <p class="text-sm text-foreground-muted">{item.company}</p>
                             <h3 class="text-xl font-bold text-accent-primary tracking-tight">{item.role}</h3>
                             <p class="mt-2 text-foreground-muted leading-relaxed">{item.description}</p>

@@ -3,28 +3,35 @@
 :root {
   /* Core palette stored as space-separated RGB for easy reuse with alpha */
   --rgb-surface: 26 32 44;
-  --rgb-surface-alt: 17 24 39;
-  --rgb-surface-elevated: 31 41 55;
-  --rgb-surface-overlay: 55 65 81;
-  --rgb-surface-hero: 13 17 23;
+  --rgb-surface-alt: 255 255 255; /* white */
+  --rgb-surface-elevated: 249 250 251; /* gray 50 */
 
+  --rgb-surface-overlay: 229 231 235; /* gray 200 */
+
+  --rgb-surface-hero: 13 17 23;
+  --rgb-surface-elevated-card: 236 252 202; /* white */
+  
   --rgb-border-subtle: 55 65 81;
   --rgb-border-strong: 75 85 99;
 
-  --rgb-text-primary: 255 255 255;
-  --rgb-text-secondary: 209 213 219;
-  --rgb-text-muted: 156 163 175;
+  --rgb-text-primary: 30 41 57; /* gray 800 */
+  --rgb-text-secondary: 54 65 83; /* gray 700 */
+  --rgb-text-muted: 74 85 101; /* gray 600 */
 
-  --rgb-accent-primary: 96 165 250;
-  --rgb-accent-primary-strong: 59 130 246;
-  --rgb-accent-secondary: 236 72 153;
+  --rgb-accent-primary: 94 165 0; /* lime 600 */
+  --rgb-accent-primary-strong: 73 125 0; /* lime 700 */
+  --rgb-accent-secondary: 230 0 118; /* pink 600 */
+
   --rgb-accent-tertiary: 231 60 126;
   --rgb-accent-quaternary: 35 166 213;
   --rgb-accent-quinary: 238 119 82;
   --rgb-accent-senary: 35 213 171;
 
-  --rgb-glow-primary: 66 153 225;
-  --rgb-glow-secondary: 236 72 153;
+  --rgb-glow-primary: 216 249 153; /* lime 200 */
+
+  --rgb-badge-primary: 94 165 0; /* lime 600 */
+  --rgb-badge-secondary: 230 0 118; /* pink 600 */
+
 
   /* Gradient helpers */
   --gradient-hero-angle: 180deg;
@@ -43,6 +50,7 @@
   --color-surface-elevated: rgb(var(--rgb-surface-elevated));
   --color-surface-overlay: rgb(var(--rgb-surface-overlay));
   --color-surface-hero: rgb(var(--rgb-surface-hero));
+  --color-surface-elevated-card: rgb(var(--rgb-surface-elevated-card));
 
   --color-foreground: rgb(var(--rgb-text-primary));
   --color-foreground-secondary: rgb(var(--rgb-text-secondary));
@@ -57,10 +65,12 @@
   --color-accent-senary: rgb(var(--rgb-accent-senary));
 
   --color-glow-primary: rgb(var(--rgb-glow-primary));
-  --color-glow-secondary: rgb(var(--rgb-glow-secondary));
 
   --color-subtle: rgb(var(--rgb-border-subtle));
   --color-strong: rgb(var(--rgb-border-strong));
+
+  --color-badge-primary: rgb(var(--rgb-badge-primary));
+  --color-badge-secondary: rgb(var(--rgb-badge-secondary));
 
   --shadow-glow-primary: 0 0 15px 2px rgb(var(--rgb-glow-primary) / 0.6);
   --shadow-glow-primary-strong: 0 0 25px 5px rgb(var(--rgb-glow-primary) / 0.9);
