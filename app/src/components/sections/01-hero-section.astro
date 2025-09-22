@@ -1,134 +1,34 @@
 ---
 ---
-<header class="hero-section relative flex flex-col md:flex-row h-screen overflow-hidden bg-surface-alt">
+<header class="hero-section relative flex flex-col md:flex-row h-[80vh] overflow-hidden bg-surface-alt">
   {/* Left Panel: Agency / Performance */}
-  <div id="agency-link-hero" class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8">
-    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-foreground text-center leading-tight transition-transform duration-300 ease-in-out">
+  <div
+    id="agency-link-hero"
+    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200"
+  >
+    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
       Campaigns that Perform
     </h1>
   </div>
 
   {/* Right Panel: Client / Inspiration */}
-  <div id="client-link-hero" class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8">
-    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-foreground text-center leading-tight transition-transform duration-300 ease-in-out">
+  <div
+    id="client-link-hero"
+    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white"
+  >
+    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
       Creative that Inspires
     </h1>
   </div>
 
   {/* Sub Headline */}
   <div class="sub-headline absolute bottom-4 md:bottom-8 left-1/2 transform -translate-x-1/2 z-10 pointer-events-none text-center">
-    <h2 class="text-2xl md:text-4xl font-bold text-foreground">Thao Nguyen</h2>
+    <h2 class="text-2xl md:text-4xl font-bold bg-gradient-to-r text-transparent bg-clip-text from-accent-primary to-accent-secondary">Thao Nguyen</h2>
     <p class="text-base md:text-lg font-light text-foreground-secondary tracking-widest uppercase mt-2">
       Creative Marketer
     </p>
   </div>
 </header>
-
-<style>
-.hero-section::before {
-    content: '';
-    position: absolute;
-    top: -10%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 20vw;
-    max-width: 300px;
-    min-width: 150px;
-    height: 120%;
-    background: linear-gradient(var(--gradient-hero-angle), rgb(var(--gradient-hero-from)), rgb(var(--gradient-hero-to)));
-    animation: gradientBG 15s ease infinite;
-    filter: blur(80px) opacity(0.6);
-    z-index: 5;
-    pointer-events: none;
-    transition: width 0.5s ease, filter 0.5s ease;
-}
-
-.hero-section:hover::before {
-    width: 25vw;
-    max-width: 400px;
-    filter: blur(60px) opacity(0.75);
-}
-
-/* --- Performance (Agency) Side Styling --- */
-.performance-side {
-    background-color: rgb(var(--rgb-surface-hero));
-    background-image: radial-gradient(circle, rgb(var(--rgb-glow-primary) / 0.2) 1px, transparent 1px);
-    background-size: 50px 50px;
-    animation: moveDots 200s linear infinite;
-}
-
-.performance-side:hover {
-    background-size: 48px 48px;
-    transform: scale(1.02);
-}
-
-@keyframes moveDots {
-    0% { background-position: 0 0; }
-    100% { background-position: 1000px 500px; }
-}
-
-/* --- Inspiration (Client) Side Styling --- */
-.inspiration-side {
-     isolation: isolate;
-}
-
-.inspiration-side::after {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: linear-gradient(var(--gradient-inspiration-angle), rgb(var(--rgb-accent-quinary)), rgb(var(--rgb-accent-tertiary)), rgb(var(--rgb-accent-quaternary)), rgb(var(--rgb-accent-senary)));
-    background-size: 400% 400%;
-    animation: gradientBG 15s ease infinite;
-    mix-blend-mode: overlay;
-    z-index: -1;
-}
-
-.inspiration-side:hover {
-    transform: scale(1.02);
-}
-
-.inspiration-side:hover::after {
-    animation-play-state: paused;
-}
-
-/* Gradient animation */
-@keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Give performance side a solid, glowing text effect */
-.performance-side .split-headline {
-    text-shadow: 0 0 15px rgb(var(--rgb-glow-primary) / 0.5), 0 0 5px rgb(var(--rgb-glow-primary) / 0.7);
-}
-
-.split-panel:hover .split-headline {
-    transform: scale(1.05);
-}
-
-/* Responsive stacking for mobile */
-@media (max-width: 768px) {
-    .hero-section::before {
-        width: 120%;
-        height: 30vh;
-        max-height: 250px;
-        top: 50%;
-        left: -10%;
-        transform: translateY(-50%);
-        background: linear-gradient(0deg, rgb(var(--gradient-hero-from)), rgb(var(--gradient-hero-to)));
-    }
-
-    .hero-section:hover::before {
-        height: 35vh;
-        max-height: 300px;
-        width: 120%;
-    }
-    .sub-headline {
-        font-size: 0.875rem; /* smaller text on mobile */
-    }
-}
-</style>
 
 <script>
     // Smooth scroll for hero links
