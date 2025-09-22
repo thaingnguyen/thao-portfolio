@@ -292,11 +292,20 @@ const colors = colorClasses[highlightColor];
       }, 300);
 
       previewCards.forEach(card => {
-        card.classList.remove('active-card', colorClasses.blue.border, colorClasses.pink.border, 'bg-surface-overlay');
-        card.classList.add('border-transparent', 'bg-surface-alt/50', 'hover:bg-surface-elevated/50');
+        card.classList.remove(
+          'active-card',
+          colorClasses.blue.border,
+          colorClasses.pink.border,
+          'bg-surface-overlay',
+          'border-transparent'
+        );
+        card.classList.add('bg-surface-alt/50', 'hover:bg-surface-elevated/50');
+
         if (parseInt(card.dataset.id) === projectId) {
           card.classList.add('active-card', colors.border, 'bg-surface-overlay');
           card.classList.remove('hover:bg-surface-elevated/50');
+        } else {
+          card.classList.add('border-transparent');
         }
       });
     }
