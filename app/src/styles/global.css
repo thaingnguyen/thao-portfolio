@@ -87,3 +87,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+
+@layer utilities {
+  .font-sans {
+    font-family: var(--font-sans);
+  }
+
+  .font-display {
+    font-family: var(--font-display);
+  }
+}
