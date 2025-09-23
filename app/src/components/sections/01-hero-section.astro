@@ -8,7 +8,7 @@ import headshot from "../../images/headshot.png";
     id="client-link-hero"
     class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200 slide-in-left"
   >
-    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
+    <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
       Campaigns that <br /> Perform
     </h1>
   </div>
@@ -18,7 +18,7 @@ import headshot from "../../images/headshot.png";
     id="agency-link-hero"
     class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white slide-in-right"
   >
-    <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
+    <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
       Creatives that <br /> Inspire
     </h1>
   </div>
@@ -26,7 +26,7 @@ import headshot from "../../images/headshot.png";
   {/* Immersive Headshot */}
   <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-1/2 md:top-4/6 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
     <div class="headshot-animate slide-in-top flex items-center justify-center">
-      <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-90">
+      <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-80">
         <Image
           src={headshot}
           alt="Thao Nguyen"
@@ -51,8 +51,8 @@ import headshot from "../../images/headshot.png";
   const headshotWrapper = heroSection?.querySelector('.headshot-animate');
   const desktopMedia = window.matchMedia('(min-width: 768px)');
   const reduceMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const MIN_SPLIT = 0.35;
-  const MAX_SPLIT = 0.65;
+  const MIN_SPLIT = 0.37;
+  const MAX_SPLIT = 0.63;
   const DEFAULT_SPLIT = 0.5;
   const EASING = 0.12;
   const SNAP_EPSILON = 0.001;
