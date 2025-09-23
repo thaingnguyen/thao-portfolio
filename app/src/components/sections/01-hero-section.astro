@@ -6,7 +6,7 @@ import headshot from "../../images/headshot.png";
   {/* Left Panel: Client / Performance */}
   <div
     id="client-link-hero"
-    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200"
+    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200 slide-in-left"
   >
     <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
       Campaigns that <br /> Perform
@@ -16,7 +16,7 @@ import headshot from "../../images/headshot.png";
   {/* Right Panel: Agency / Inspiration */}
   <div
     id="agency-link-hero"
-    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white"
+    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white slide-in-right"
   >
     <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
       Creatives that <br /> Inspire
@@ -25,12 +25,14 @@ import headshot from "../../images/headshot.png";
 
   {/* Immersive Headshot */}
   <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-1/2 md:top-4/6 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
-    <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-90">
-      <Image
-        src={headshot}
-        alt="Thao Nguyen"
-        class="relative h-full w-full rounded-full object-cover shadow-2xl shadow-black/20"
-      />
+    <div class="headshot-animate slide-in-top flex items-center justify-center">
+      <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-90">
+        <Image
+          src={headshot}
+          alt="Thao Nguyen"
+          class="relative h-full w-full rounded-full object-cover shadow-2xl shadow-black/20"
+        />
+      </div>
     </div>
   </div>
 
@@ -46,18 +48,32 @@ import headshot from "../../images/headshot.png";
   const heroSection = document.querySelector('.hero-section');
   const leftPanel = heroSection?.querySelector('.performance-side');
   const rightPanel = heroSection?.querySelector('.inspiration-side');
+  const headshotWrapper = heroSection?.querySelector('.headshot-animate');
   const desktopMedia = window.matchMedia('(min-width: 768px)');
+  const reduceMotionMedia = window.matchMedia('(prefers-reduced-motion: reduce)');
   const MIN_SPLIT = 0.35;
   const MAX_SPLIT = 0.65;
   const DEFAULT_SPLIT = 0.5;
   const EASING = 0.12;
   const SNAP_EPSILON = 0.001;
+  const STARTUP_FALLBACK_DELAY = 2200;
 
   let currentLeftRatio = DEFAULT_SPLIT;
   let targetLeftRatio = DEFAULT_SPLIT;
   let frameId = null;
+  let startupAnimationsComplete = reduceMotionMedia.matches;
+  let startupFallbackTimer = null;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const finalizeStartupAnimations = () => {
+    if (startupAnimationsComplete) return;
+    startupAnimationsComplete = true;
+    if (startupFallbackTimer !== null) {
+      clearTimeout(startupFallbackTimer);
+      startupFallbackTimer = null;
+    }
+  };
 
   const applySplit = (ratio) => {
     if (!leftPanel || !rightPanel) return;
@@ -113,23 +129,75 @@ import headshot from "../../images/headshot.png";
   };
 
   const handlePointerMove = (event) => {
-    if (!heroSection || !desktopMedia.matches) return;
+    if (!heroSection || !desktopMedia.matches || !startupAnimationsComplete) return;
     const bounds = heroSection.getBoundingClientRect();
     const normalized = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
     const leftRatio = 1 - normalized;
     setTargetRatio(leftRatio);
   };
 
+  const handlePointerLeave = () => {
+    if (!startupAnimationsComplete) return;
+    resetSplit();
+  };
+
   if (heroSection && leftPanel && rightPanel) {
+    if (!startupAnimationsComplete) {
+      let pendingStartupAnimations = 0;
+      const startupAnimationTargets = new Map();
+
+      const handleStartupAnimationEnd = (event) => {
+        const expectedName = startupAnimationTargets.get(event.currentTarget);
+        if (!expectedName || event.animationName !== expectedName) {
+          return;
+        }
+
+        event.currentTarget.removeEventListener('animationend', handleStartupAnimationEnd);
+        startupAnimationTargets.delete(event.currentTarget);
+        pendingStartupAnimations = Math.max(0, pendingStartupAnimations - 1);
+
+        if (pendingStartupAnimations === 0) {
+          finalizeStartupAnimations();
+        }
+      };
+
+      const registerStartupTarget = (element, animationName) => {
+        if (!element) return;
+        startupAnimationTargets.set(element, animationName);
+        pendingStartupAnimations += 1;
+        element.addEventListener('animationend', handleStartupAnimationEnd);
+      };
+
+      if (reduceMotionMedia.matches) {
+        finalizeStartupAnimations();
+      } else {
+        registerStartupTarget(leftPanel, 'hero-slide-in-left');
+        registerStartupTarget(rightPanel, 'hero-slide-in-right');
+        registerStartupTarget(headshotWrapper, 'hero-slide-in-top');
+
+        if (pendingStartupAnimations === 0) {
+          finalizeStartupAnimations();
+        } else if (startupFallbackTimer === null) {
+          startupFallbackTimer = window.setTimeout(finalizeStartupAnimations, STARTUP_FALLBACK_DELAY);
+        }
+      }
+    }
+
     heroSection.addEventListener('pointermove', handlePointerMove);
     heroSection.addEventListener('pointerenter', handlePointerMove);
-    heroSection.addEventListener('pointerleave', () => resetSplit());
+    heroSection.addEventListener('pointerleave', handlePointerLeave);
     desktopMedia.addEventListener('change', (event) => {
       if (!event.matches) {
         resetSplit({ instant: true });
       }
     });
   }
+
+  reduceMotionMedia.addEventListener('change', (event) => {
+    if (event.matches) {
+      finalizeStartupAnimations();
+    }
+  });
 
   // Smooth scroll for hero links
   document.getElementById('agency-link-hero')?.addEventListener('click', () => {
@@ -146,3 +214,67 @@ import headshot from "../../images/headshot.png";
     }
   });
 </script>
+
+<style is:global>
+  @keyframes hero-slide-in-left {
+    from {
+      transform: translateX(-120%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-slide-in-right {
+    from {
+      transform: translateX(120%);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-in-left {
+    animation: hero-slide-in-left 0.9s ease-out 0.05s forwards;
+    will-change: transform, opacity;
+  }
+
+  .slide-in-right {
+    animation: hero-slide-in-right 0.9s ease-out 0.15s forwards;
+    will-change: transform, opacity;
+  }
+
+  @keyframes hero-slide-in-top {
+    from {
+      transform: translateY(-3rem);
+      opacity: 0;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .slide-in-top {
+    opacity: 0;
+    animation: hero-slide-in-top 0.8s ease-out 1.05s forwards;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .slide-in-left,
+    .slide-in-right,
+    .slide-in-top {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
