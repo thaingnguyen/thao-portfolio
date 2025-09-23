@@ -42,8 +42,13 @@ import headshot from "../../images/headshot.png";
   const desktopMedia = window.matchMedia('(min-width: 768px)');
   const MIN_SPLIT = 0.35;
   const MAX_SPLIT = 0.65;
+  const DEFAULT_SPLIT = 0.5;
+  const EASING = 0.12;
+  const SNAP_EPSILON = 0.001;
+
+  let currentLeftRatio = DEFAULT_SPLIT;
+  let targetLeftRatio = DEFAULT_SPLIT;
   let frameId = null;
-  let pendingLeftRatio = null;
 
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -59,33 +64,45 @@ import headshot from "../../images/headshot.png";
     rightPanel.style.width = `${rightPercent}%`;
   };
 
-  const flushPending = () => {
-    if (frameId !== null) {
-      cancelAnimationFrame(frameId);
+  const animateStep = () => {
+    const diff = targetLeftRatio - currentLeftRatio;
+    if (Math.abs(diff) <= SNAP_EPSILON) {
+      currentLeftRatio = targetLeftRatio;
+      applySplit(currentLeftRatio);
       frameId = null;
+      return;
     }
-    pendingLeftRatio = null;
+
+    currentLeftRatio = clamp(currentLeftRatio + diff * EASING, MIN_SPLIT, MAX_SPLIT);
+    applySplit(currentLeftRatio);
+    frameId = requestAnimationFrame(animateStep);
   };
 
-  const scheduleSplit = (ratio) => {
-    pendingLeftRatio = ratio;
-    if (frameId !== null) return;
-    frameId = requestAnimationFrame(() => {
-      if (pendingLeftRatio !== null) {
-        applySplit(pendingLeftRatio);
+  const ensureAnimation = () => {
+    if (frameId === null) {
+      frameId = requestAnimationFrame(animateStep);
+    }
+  };
+
+  const setTargetRatio = (ratio) => {
+    targetLeftRatio = clamp(ratio, MIN_SPLIT, MAX_SPLIT);
+    ensureAnimation();
+  };
+
+  const resetSplit = ({ instant = false } = {}) => {
+    const defaultRatio = clamp(DEFAULT_SPLIT, MIN_SPLIT, MAX_SPLIT);
+    if (instant) {
+      if (frameId !== null) {
+        cancelAnimationFrame(frameId);
+        frameId = null;
       }
-      frameId = null;
-      pendingLeftRatio = null;
-    });
-  };
+      currentLeftRatio = defaultRatio;
+      targetLeftRatio = defaultRatio;
+      applySplit(defaultRatio);
+      return;
+    }
 
-  const resetSplit = () => {
-    flushPending();
-    if (!leftPanel || !rightPanel) return;
-    leftPanel.style.flexBasis = '';
-    leftPanel.style.width = '';
-    rightPanel.style.flexBasis = '';
-    rightPanel.style.width = '';
+    setTargetRatio(defaultRatio);
   };
 
   const handlePointerMove = (event) => {
@@ -93,16 +110,16 @@ import headshot from "../../images/headshot.png";
     const bounds = heroSection.getBoundingClientRect();
     const normalized = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
     const leftRatio = 1 - normalized;
-    scheduleSplit(leftRatio);
+    setTargetRatio(leftRatio);
   };
 
   if (heroSection && leftPanel && rightPanel) {
     heroSection.addEventListener('pointermove', handlePointerMove);
     heroSection.addEventListener('pointerenter', handlePointerMove);
-    heroSection.addEventListener('pointerleave', resetSplit);
+    heroSection.addEventListener('pointerleave', () => resetSplit());
     desktopMedia.addEventListener('change', (event) => {
       if (!event.matches) {
-        resetSplit();
+        resetSplit({ instant: true });
       }
     });
   }
@@ -118,7 +135,7 @@ import headshot from "../../images/headshot.png";
 
   window.addEventListener('resize', () => {
     if (!desktopMedia.matches) {
-      resetSplit();
+      resetSplit({ instant: true });
     }
   });
 </script>
