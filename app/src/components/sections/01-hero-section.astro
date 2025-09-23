@@ -1,10 +1,12 @@
 ---
+import { Image } from 'astro:assets';
+import headshot from "../../images/headshot.png";
 ---
 <header class="hero-section relative flex flex-col md:flex-row h-[80vh] overflow-hidden bg-surface-alt">
   {/* Left Panel: Client / Performance */}
   <div
     id="client-link-hero"
-    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200"
+    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200"
   >
     <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
       Campaigns that <br /> Perform
@@ -14,29 +16,109 @@
   {/* Right Panel: Agency / Inspiration */}
   <div
     id="agency-link-hero"
-    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-500 ease-in-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white"
+    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white"
   >
     <h1 class="split-headline text-5xl md:text-6xl lg:text-7xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
-      Creative that <br /> Inspires
+      Creatives that <br /> Inspire
     </h1>
   </div>
 
-  {/* Sub Headline */}
- <div class="sub-headline absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 md:top-auto md:bottom-8 md:translate-y-0 z-10 pointer-events-none text-center w-full px-4">
-    <h2 class="text-4xl md:text-6xl font-bold bg-gradient-to-r text-transparent bg-clip-text from-accent-primary to-accent-secondary">Thao Nguyen</h2>
-    <p class="text-base md:text-xl font-light text-foreground-secondary tracking-widest uppercase mt-2">
-      Creative Marketer
-    </p>
+  {/* Immersive Headshot */}
+  <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-3/4 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
+    <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-90">
+      <Image
+        src={headshot}
+        alt="Thao Nguyen"
+        class="relative h-full w-full rounded-full object-cover"
+      />
+    </div>
   </div>
 </header>
 
 <script>
-    // Smooth scroll for hero links
-  document.getElementById('agency-link-hero').addEventListener('click', () => {
-      document.getElementById('agency-showcase').scrollIntoView({ behavior: 'smooth' });
+  const heroSection = document.querySelector('.hero-section');
+  const leftPanel = heroSection?.querySelector('.performance-side');
+  const rightPanel = heroSection?.querySelector('.inspiration-side');
+  const desktopMedia = window.matchMedia('(min-width: 768px)');
+  const MIN_SPLIT = 0.35;
+  const MAX_SPLIT = 0.65;
+  let frameId = null;
+  let pendingLeftRatio = null;
+
+  const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+
+  const applySplit = (ratio) => {
+    if (!leftPanel || !rightPanel) return;
+    const clamped = clamp(ratio, MIN_SPLIT, MAX_SPLIT);
+    const leftPercent = clamped * 100;
+    const rightPercent = 100 - leftPercent;
+
+    leftPanel.style.flexBasis = `${leftPercent}%`;
+    leftPanel.style.width = `${leftPercent}%`;
+    rightPanel.style.flexBasis = `${rightPercent}%`;
+    rightPanel.style.width = `${rightPercent}%`;
+  };
+
+  const flushPending = () => {
+    if (frameId !== null) {
+      cancelAnimationFrame(frameId);
+      frameId = null;
+    }
+    pendingLeftRatio = null;
+  };
+
+  const scheduleSplit = (ratio) => {
+    pendingLeftRatio = ratio;
+    if (frameId !== null) return;
+    frameId = requestAnimationFrame(() => {
+      if (pendingLeftRatio !== null) {
+        applySplit(pendingLeftRatio);
+      }
+      frameId = null;
+      pendingLeftRatio = null;
+    });
+  };
+
+  const resetSplit = () => {
+    flushPending();
+    if (!leftPanel || !rightPanel) return;
+    leftPanel.style.flexBasis = '';
+    leftPanel.style.width = '';
+    rightPanel.style.flexBasis = '';
+    rightPanel.style.width = '';
+  };
+
+  const handlePointerMove = (event) => {
+    if (!heroSection || !desktopMedia.matches) return;
+    const bounds = heroSection.getBoundingClientRect();
+    const normalized = clamp((event.clientX - bounds.left) / bounds.width, 0, 1);
+    const leftRatio = 1 - normalized;
+    scheduleSplit(leftRatio);
+  };
+
+  if (heroSection && leftPanel && rightPanel) {
+    heroSection.addEventListener('pointermove', handlePointerMove);
+    heroSection.addEventListener('pointerenter', handlePointerMove);
+    heroSection.addEventListener('pointerleave', resetSplit);
+    desktopMedia.addEventListener('change', (event) => {
+      if (!event.matches) {
+        resetSplit();
+      }
+    });
+  }
+
+  // Smooth scroll for hero links
+  document.getElementById('agency-link-hero')?.addEventListener('click', () => {
+    document.getElementById('agency-showcase')?.scrollIntoView({ behavior: 'smooth' });
   });
 
-  document.getElementById('client-link-hero').addEventListener('click', () => {
-      document.getElementById('client-showcase').scrollIntoView({ behavior: 'smooth' });
+  document.getElementById('client-link-hero')?.addEventListener('click', () => {
+    document.getElementById('client-showcase')?.scrollIntoView({ behavior: 'smooth' });
+  });
+
+  window.addEventListener('resize', () => {
+    if (!desktopMedia.matches) {
+      resetSplit();
+    }
   });
 </script>
