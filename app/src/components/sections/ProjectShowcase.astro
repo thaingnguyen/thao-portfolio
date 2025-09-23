@@ -88,11 +88,11 @@ const colors = colorClasses[highlightColor];
             
 
             <!-- Preview Navigation -->
-            <div id={`${showcaseId}-preview-nav`} class="grid grid-cols-2 md:grid-cols-4 gap-px bg-surface-overlay border-t border-transparent">
+            <div id={`${showcaseId}-preview-nav`} class="grid grid-cols-2 md:grid-cols-4 gap-px shadow-md">
                 {projects.map((project, index) => (
                     <div 
                         class:list={[
-                            "preview-card", "p-4", "cursor-pointer", "transition-colors", 
+                            "preview-card", "px-4", "py-6", "cursor-pointer", "transition-colors", 
                             "duration-200", "border-b-4", "text-center",
                             index === 0 
                                 ? ["active-card", colors.border, "bg-surface-overlay"] 
@@ -103,15 +103,23 @@ const colors = colorClasses[highlightColor];
                         <div class:list={["w-full flex justify-center mb-2", colors.icon]}>
                           <Icon name={project.icon} class="w-6 h-6" />
                         </div>
-                        <p class="text-2xl font-bold text-secondary">{project.preview.value}</p>
-                        <p class="text-xs text-foreground-muted mb-2">{project.preview.label}</p>
-                        <h4 class="text-sm font-semibold text-secondary leading-tight">{project.preview.title}</h4>
+                        <p class="text-2xl font-bold text-secondary" set:html={project.preview.title} />
+                        {/* <p class="text-xs text-foreground-muted mb-2">{project.preview.label}</p>
+                        <h4 class="text-sm font-semibold text-secondary leading-tight">{project.preview.value}</h4> */}
                     </div>
                 ))}
             </div>
 
             <!-- Featured Project Display -->
-            <div id={`${showcaseId}-featured-project-container`} class="p-6 sm:p-8 lg:p-12 transition-opacity duration-300 ease-in-out">
+            <div id={`${showcaseId}-featured-project-container`} class="group relative p-6 sm:p-8 lg:py-12 lg:px-18 transition-opacity duration-300 ease-in-out">
+
+                <!-- Floating Navigation Buttons -->
+                <button id={`${showcaseId}-prev-btn`} aria-label="Previous Project" class="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 bg-surface-alt/50 hover:bg-surface-alt/80 text-foreground rounded-full p-2 transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100 z-10 border border-surface-overlay shadow-lg">
+                    <Icon name="chevron-left" class="w-6 h-6 sm:w-8 sm:h-8" />
+                </button>
+                <button id={`${showcaseId}-next-btn`} aria-label="Next Project" class="absolute top-1/2 right-2 sm:right-4 -translate-y-1/2 bg-surface-alt/50 hover:bg-surface-alt/80 text-foreground rounded-full p-2 transition-opacity opacity-0 group-hover:opacity-100 focus:opacity-100 z-10 border border-surface-overlay shadow-lg">
+                    <Icon name="chevron-right" class="w-6 h-6 sm:w-8 sm:h-8" />
+                </button>
 
                 <!-- Details Section (Bottom Row) -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -135,7 +143,7 @@ const colors = colorClasses[highlightColor];
                     </div>
 
                     <!-- Media Area (Right) -->
-                    <div class="w-full h-auto aspect-video rounded-lg overflow-hidden bg-surface-overlay order-1 lg:order-2">
+                    <div class="group relative w-full h-auto aspect-video rounded-lg overflow-hidden bg-surface-overlay order-1 lg:order-2">
                         <img id={`${showcaseId}-featured-media`} {...firstImage.attributes} alt={`${initialProject.title} media`} class="w-full h-full object-cover">
                     </div>
 
@@ -189,6 +197,10 @@ const colors = colorClasses[highlightColor];
     const descriptionWrapper = container.querySelector(`#${showcaseId}-description-wrapper`);
 
     const previewCards = previewNav.querySelectorAll('.preview-card');
+    const prevBtn = container.querySelector(`#${showcaseId}-prev-btn`);
+    const nextBtn = container.querySelector(`#${showcaseId}-next-btn`);
+
+    let currentProjectIndex = 0;
 
     function computeStableHeights() {
       // Stabilize the left content column (role, title, description)
@@ -255,6 +267,8 @@ const colors = colorClasses[highlightColor];
       const projectIndex = projects.findIndex(p => p.id === parseInt(projectId));
       if (projectIndex === -1) return;
       
+      currentProjectIndex = projectIndex;
+
       const project = projects[projectIndex];
       const processedImage = processedImages[projectIndex];
 
@@ -308,6 +322,22 @@ const colors = colorClasses[highlightColor];
           card.classList.add('border-transparent');
         }
       });
+    }
+
+    function navigateProjects(direction) {
+      let newIndex;
+      if (direction === 'next') {
+        newIndex = (currentProjectIndex + 1) % projects.length;
+      } else {
+        newIndex = (currentProjectIndex - 1 + projects.length) % projects.length;
+      }
+      const nextProjectId = projects[newIndex].id;
+      updateFeaturedProject(nextProjectId);
+    }
+
+    if (prevBtn && nextBtn) {
+      prevBtn.addEventListener('click', () => navigateProjects('prev'));
+      nextBtn.addEventListener('click', () => navigateProjects('next'));
     }
 
     previewCards.forEach(card => {
