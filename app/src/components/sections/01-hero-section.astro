@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import headshot from "../../images/headshot.png";
 ---
-<header class="hero-section relative flex flex-col md:flex-row h-[80vh] overflow-hidden bg-surface-alt">
+<header class="hero-section relative flex flex-col md:flex-row h-[80vh] bg-surface-alt">
   {/* Left Panel: Client / Performance */}
   <div
     id="client-link-hero"
@@ -24,14 +24,21 @@ import headshot from "../../images/headshot.png";
   </div>
 
   {/* Immersive Headshot */}
-  <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-3/4 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
+  <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-1/2 md:top-4/6 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
     <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-90">
       <Image
         src={headshot}
         alt="Thao Nguyen"
-        class="relative h-full w-full rounded-full object-cover"
+        class="relative h-full w-full rounded-full object-cover shadow-2xl shadow-black/20"
       />
     </div>
+  </div>
+
+  <!-- Bouncing Arrow -->
+  <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 z-20">
+    <svg class="animate-bounce w-16 h-16 text-surface-hero" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor">
+      <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
+    </svg>
   </div>
 </header>
 
