@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { getImage, type ImageMetadata } from 'astro:assets';
-import projectShowcaseScriptUrl from '../../scripts/project-showcase-init.ts?url';
 
 // Component Props
 interface Project {
@@ -236,4 +235,4 @@ const colors = colorClasses[highlightColor];
   </div>
 </section>
 
-<script type="module" src={projectShowcaseScriptUrl}></script>
+<script src="../../scripts/project-showcase-init.ts"></script>
