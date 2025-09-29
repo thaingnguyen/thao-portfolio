@@ -102,9 +102,9 @@ const colors = colorClasses[highlightColor];
       data-project-showcase={showcaseId}
       data-highlight-color={highlightColor}
     >
-      <div class="embla__thumbs px-4 py-4 md:flex md:justify-center md:gap-6 md:py-6">
-        <div class="embla__thumbs__viewport overflow-hidden md:overflow-visible md:contents">
-          <div class="embla__thumbs__container flex gap-4 md:gap-8 md:contents">
+      <div class="embla__thumbs px-4 py-5 md:flex md:justify-center md:gap-6 md:py-6">
+        <div class="embla__thumbs__viewport overflow-x-hidden overflow-y-visible md:overflow-visible md:contents">
+          <div class="embla__thumbs__container flex gap-4 pe-6 md:pe-0 md:gap-8 md:contents">
             {projects.map((project, index) => (
               <button
                 type="button"
@@ -113,31 +113,35 @@ const colors = colorClasses[highlightColor];
                   'flex flex-col items-center justify-center gap-2',
                   'rounded-xl border-2 text-foreground',
                   'transition-all duration-200 ease-out',
-                  'min-w-[10rem] px-4 py-6 md:min-w-[12rem] md:py-6',
-                  'hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/70 focus-visible:-translate-y-1',
-                  'flex-[0_0_calc(100%/1.5)] max-w-[calc(100%/1.5)] md:flex-[0_0_calc((100%-8rem)/4)] md:max-w-[calc((100%-8rem)/4)]',
+                  'min-w-[66%] px-4 py-6 sm:min-w-[10rem] md:min-w-[12rem] md:py-6',
+                  'md:hover:-translate-y-1 md:hover:shadow-[0_12px_28px_rgba(15,23,42,0.16)]',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/70 focus-visible:md:-translate-y-1',
+                  'w-full flex-shrink-0',
+                  'flex-[0_0_66%] max-w-[66%] sm:flex-[0_0_calc(100%/1.5)] sm:max-w-[calc(100%/1.5)] md:flex-[0_0_calc((100%-8rem)/4)] md:max-w-[calc((100%-8rem)/4)]',
                   'cursor-pointer',
                   'bg-surface-alt',
                   index === 0
                     ? [
-                        'shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
-                        '-translate-y-1',
+                        'shadow-none',
+                        'md:shadow-[0_16px_32px_rgba(15,23,42,0.18)]',
+                        'translate-y-0',
+                        'md:-translate-y-1',
                         colors.border
                       ]
                     : [
-                        'shadow-[0_6px_16px_rgba(15,23,42,0.12)]',
+                        'shadow-none',
+                        'md:shadow-[0_6px_18px_rgba(15,23,42,0.12)]',
                         'translate-y-0',
-                        'border-transparent'
+                        'border-[color:rgb(var(--rgb-surface-overlay)/0.6)]'
                       ]
                 ]}
                 data-index={index}
                 data-id={project.id}
               >
-                <div class:list={['w-full flex justify-center mb-2', colors.icon]}>
+                <div class:list={['w-full justify-center mb-2 hidden md:flex', colors.icon]}>
                   <Icon name={project.icon} class="w-6 h-6" />
                 </div>
-                <p class="text-2xl font-bold text-secondary" set:html={project.preview.title} />
+                <p class="sm:text-lg md:text-2xl font-bold text-secondary" set:html={project.preview.title} />
               </button>
             ))}
           </div>

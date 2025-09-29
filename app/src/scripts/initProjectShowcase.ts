@@ -17,14 +17,17 @@ const colorClasses: Record<HighlightColor, ColorClassConfig> = {
 };
 
 const INACTIVE_THUMB_CLASSES = [
-  'shadow-[0_6px_16px_rgba(15,23,42,0.12)]',
+  'shadow-none',
+  'md:shadow-[0_6px_18px_rgba(15,23,42,0.12)]',
   'translate-y-0',
-  'border-transparent'
+  'border-[color:rgb(var(--rgb-surface-overlay)/0.6)]'
 ] as const;
 
 const ACTIVE_THUMB_CLASSES = [
-  'shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
-  '-translate-y-1'
+  'shadow-none',
+  'md:shadow-[0_16px_32px_rgba(15,23,42,0.18)]',
+  'translate-y-0',
+  'md:-translate-y-1'
 ] as const;
 
 const initShowcase = (container: HTMLElement) => {
