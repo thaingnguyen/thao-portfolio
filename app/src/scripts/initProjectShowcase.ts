@@ -1,4 +1,5 @@
 import EmblaCarousel from 'embla-carousel';
+import type { EmblaOptionsType } from 'embla-carousel';
 
 type HighlightColor = 'blue' | 'pink';
 
@@ -15,6 +16,17 @@ const colorClasses: Record<HighlightColor, ColorClassConfig> = {
   }
 };
 
+const INACTIVE_THUMB_CLASSES = [
+  'shadow-[0_6px_16px_rgba(15,23,42,0.12)]',
+  'translate-y-0',
+  'border-transparent'
+] as const;
+
+const ACTIVE_THUMB_CLASSES = [
+  'shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
+  '-translate-y-1'
+] as const;
+
 const initShowcase = (container: HTMLElement) => {
   if (container.dataset.emblaInitialized === 'true') {
     return;
@@ -23,26 +35,61 @@ const initShowcase = (container: HTMLElement) => {
   const highlightColor = (container.dataset.highlightColor as HighlightColor) ?? 'blue';
   const colors = colorClasses[highlightColor] ?? colorClasses.blue;
 
-  const viewport = container.querySelector<HTMLElement>('.embla__viewport');
-  const previewNav = container.querySelector<HTMLElement>('[data-preview-nav]');
+  const mainViewport = container.querySelector<HTMLElement>('.embla__viewport');
+  const thumbsViewport = container.querySelector<HTMLElement>('.embla__thumbs__viewport');
   const prevBtn = container.querySelector<HTMLButtonElement>('.embla__prev');
   const nextBtn = container.querySelector<HTMLButtonElement>('.embla__next');
 
-  if (!viewport || !previewNav) {
+  if (!mainViewport || !thumbsViewport) {
     container.dataset.emblaInitialized = 'true';
     return;
   }
 
-  const previewCards = Array.from(previewNav.querySelectorAll<HTMLElement>('.preview-card'));
-  if (!previewCards.length) {
+  const thumbSlides = Array.from(thumbsViewport.querySelectorAll<HTMLElement>('.embla__thumbs__slide'));
+  if (!thumbSlides.length) {
     container.dataset.emblaInitialized = 'true';
     return;
   }
 
-  const emblaApi = EmblaCarousel(viewport, { loop: true });
+  const mainOptions: EmblaOptionsType = { loop: true };
+  const thumbsOptions: EmblaOptionsType = {
+    containScroll: 'keepSnaps',
+    dragFree: true,
+    slidesToScroll: 1,
+    align: 'start',
+    breakpoints: {
+      '(min-width: 768px)': { active: false }
+    }
+  };
 
-  previewCards.forEach((card, index) => {
-    card.addEventListener('click', () => emblaApi.scrollTo(index));
+  const emblaApi = EmblaCarousel(mainViewport, mainOptions);
+  const emblaThumbsApi = EmblaCarousel(thumbsViewport, thumbsOptions);
+
+  const onThumbClick = (index: number) => {
+    emblaApi.scrollTo(index);
+  };
+
+  const updateThumbs = () => {
+    const selectedIndex = emblaApi.selectedScrollSnap();
+    thumbSlides.forEach((slide, index) => {
+      slide.classList.remove(
+        colorClasses.blue.border,
+        colorClasses.pink.border,
+        ...ACTIVE_THUMB_CLASSES,
+        ...INACTIVE_THUMB_CLASSES
+      );
+      slide.classList.add(...INACTIVE_THUMB_CLASSES);
+
+      if (index === selectedIndex) {
+        slide.classList.remove(...INACTIVE_THUMB_CLASSES);
+        slide.classList.add(...ACTIVE_THUMB_CLASSES, colors.border);
+        emblaThumbsApi.scrollTo(index);
+      }
+    });
+  };
+
+  thumbSlides.forEach((slide, index) => {
+    slide.addEventListener('click', () => onThumbClick(index), false);
   });
 
   if (prevBtn && nextBtn) {
@@ -56,35 +103,15 @@ const initShowcase = (container: HTMLElement) => {
     if (!prevBtn || !nextBtn) {
       return;
     }
-
     const shouldHide = emblaApi.slideNodes().length <= 1;
     prevBtn.classList.toggle('hidden', shouldHide);
     nextBtn.classList.toggle('hidden', shouldHide);
-  };
-
-  const updatePreviewNav = () => {
-    const selectedIndex = emblaApi.selectedScrollSnap();
-    previewCards.forEach((card, index) => {
-      card.classList.remove(
-        'active-card',
-        colorClasses.blue.border,
-        colorClasses.pink.border,
-        'bg-surface-overlay'
-      );
-      card.classList.add('bg-surface-alt/50', 'hover:bg-surface-elevated/50', 'border-transparent');
-
-      if (index === selectedIndex) {
-        card.classList.add('active-card', colors.border, 'bg-surface-overlay');
-        card.classList.remove('hover:bg-surface-elevated/50');
-      }
-    });
   };
 
   const updateButtonStates = () => {
     if (!prevBtn || !nextBtn) {
       return;
     }
-
     prevBtn.disabled = !emblaApi.canScrollPrev();
     nextBtn.disabled = !emblaApi.canScrollNext();
   };
@@ -103,19 +130,24 @@ const initShowcase = (container: HTMLElement) => {
     });
   };
 
-  emblaApi.on('select', () => {
-    updatePreviewNav();
+  const onSelect = () => {
+    updateThumbs();
     updateButtonStates();
-  });
+  };
 
-  emblaApi.on('reInit', () => {
-    updatePreviewNav();
-    updateButtonStates();
+  emblaApi.on('select', onSelect);
+  emblaApi.on('reInit', onSelect);
+
+  emblaThumbsApi.on('reInit', updateThumbs);
+
+  const onResize = () => {
     syncLayoutHeights();
+    // Re-initialize to apply or remove the breakpoint config
+    emblaThumbsApi.reInit();
     toggleButtonVisibility();
-  });
+  };
 
-  updatePreviewNav();
+  updateThumbs();
   updateButtonStates();
   syncLayoutHeights();
   toggleButtonVisibility();
@@ -123,7 +155,7 @@ const initShowcase = (container: HTMLElement) => {
   let resizeTimeout: number | undefined;
   window.addEventListener('resize', () => {
     window.clearTimeout(resizeTimeout);
-    resizeTimeout = window.setTimeout(syncLayoutHeights, 150);
+    resizeTimeout = window.setTimeout(onResize, 150);
   });
 
   container.dataset.emblaInitialized = 'true';

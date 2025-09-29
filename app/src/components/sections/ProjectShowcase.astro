@@ -98,45 +98,56 @@ const colors = colorClasses[highlightColor];
 
     <div
       id={`${showcaseId}-carousel-container`}
-      class="embla group bg-surface-alt rounded-2xl shadow-lg overflow-hidden"
+      class="embla group relative bg-surface-alt rounded-2xl shadow-lg overflow-hidden"
       data-project-showcase={showcaseId}
       data-highlight-color={highlightColor}
     >
-      <div
-        id={`${showcaseId}-preview-nav`}
-        class="grid grid-cols-2 md:grid-cols-4 gap-px shadow-md"
-        data-preview-nav
-      >
-        {projects.map((project, index) => (
-          <div
-            class:list={[
-              'preview-card',
-              'px-4', 
-              'py-6',
-              'cursor-pointer',
-              'transition-colors',
-              'duration-200',
-              'border-b-4',
-              'text-center',
-              index === 0
-                ? ['active-card', colors.border, 'bg-surface-overlay']
-                : 'border-transparent bg-surface-alt/50 hover:bg-surface-elevated/50'
-            ]}
-            data-index={index}
-            data-id={project.id}
-          >
-            <div class:list={['w-full flex justify-center mb-2', colors.icon]}>
-              <Icon name={project.icon} class="w-6 h-6" />
-            </div>
-            <p class="text-2xl font-bold text-secondary" set:html={project.preview.title} />
+      <div class="embla__thumbs px-4 py-4 md:flex md:justify-center md:gap-6 md:py-6">
+        <div class="embla__thumbs__viewport overflow-hidden md:overflow-visible md:contents">
+          <div class="embla__thumbs__container flex gap-4 md:gap-8 md:contents">
+            {projects.map((project, index) => (
+              <button
+                type="button"
+                class:list={[
+                  'embla__slide embla__thumbs__slide',
+                  'flex flex-col items-center justify-center gap-2',
+                  'rounded-xl border-2 text-foreground',
+                  'transition-all duration-200 ease-out',
+                  'min-w-[10rem] px-4 py-6 md:min-w-[12rem] md:py-6',
+                  'hover:-translate-y-1 hover:shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
+                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/70 focus-visible:-translate-y-1',
+                  'flex-[0_0_calc(100%/1.5)] max-w-[calc(100%/1.5)] md:flex-[0_0_calc((100%-8rem)/4)] md:max-w-[calc((100%-8rem)/4)]',
+                  'cursor-pointer',
+                  'bg-surface-alt',
+                  index === 0
+                    ? [
+                        'shadow-[0_10px_24px_rgba(15,23,42,0.20)]',
+                        '-translate-y-1',
+                        colors.border
+                      ]
+                    : [
+                        'shadow-[0_6px_16px_rgba(15,23,42,0.12)]',
+                        'translate-y-0',
+                        'border-transparent'
+                      ]
+                ]}
+                data-index={index}
+                data-id={project.id}
+              >
+                <div class:list={['w-full flex justify-center mb-2', colors.icon]}>
+                  <Icon name={project.icon} class="w-6 h-6" />
+                </div>
+                <p class="text-2xl font-bold text-secondary" set:html={project.preview.title} />
+              </button>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
-      <div class="embla__viewport">
-        <div class="embla__container">
+      <div class="embla__viewport overflow-hidden">
+        <div class="embla__container flex">
           {projects.map((project, index) => (
-            <div class="embla__slide flex flex-col p-6 sm:p-8 lg:p-12">
+            <div class="embla__slide flex flex-col p-6 sm:p-8 lg:p-12 flex-[0_0_100%] min-w-0">
               
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center flex-1">
                 <div class="text-foreground-secondary order-2 lg:order-1 flex flex-col">
@@ -219,25 +230,5 @@ const colors = colorClasses[highlightColor];
     </div>
   </div>
 </section>
-
-<style>
-  .embla {
-    overflow: hidden;
-    position: relative;
-  }
-
-  .embla__container {
-    display: flex;
-  }
-
-  .embla__slide {
-    flex: 0 0 100%;
-    min-width: 0;
-  }
-
-  .active-card {
-    background-color: rgb(var(--rgb-surface-overlay) / 0.5);
-  }
-</style>
 
 <script type="module" src="/src/scripts/initProjectShowcase.ts"></script>
