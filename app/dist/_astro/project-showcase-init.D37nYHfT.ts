@@ -1,5 +1,4 @@
-import EmblaCarousel from 'embla-carousel';
-import type { EmblaOptionsType } from 'embla-carousel';
+import EmblaCarousel, { type EmblaOptionsType } from 'embla-carousel';
 
 type HighlightColor = 'blue' | 'pink';
 
@@ -30,6 +29,12 @@ const ACTIVE_THUMB_CLASSES = [
   'md:-translate-y-1'
 ] as const;
 
+declare global {
+  interface Window {
+    __projectShowcaseInitialized?: boolean;
+  }
+}
+
 const initShowcase = (container: HTMLElement) => {
   if (container.dataset.emblaInitialized === 'true') {
     return;
@@ -48,7 +53,10 @@ const initShowcase = (container: HTMLElement) => {
     return;
   }
 
-  const thumbSlides = Array.from(thumbsViewport.querySelectorAll<HTMLElement>('.embla__thumbs__slide'));
+  const thumbSlides = Array.from(
+    thumbsViewport.querySelectorAll<HTMLElement>('.embla__thumbs__slide')
+  );
+
   if (!thumbSlides.length) {
     container.dataset.emblaInitialized = 'true';
     return;
@@ -145,7 +153,6 @@ const initShowcase = (container: HTMLElement) => {
 
   const onResize = () => {
     syncLayoutHeights();
-    // Re-initialize to apply or remove the breakpoint config
     emblaThumbsApi.reInit();
     toggleButtonVisibility();
   };
@@ -169,8 +176,22 @@ const initAll = () => {
   containers.forEach(initShowcase);
 };
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initAll, { once: true });
-} else {
-  initAll();
-}
+const start = () => {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  if (window.__projectShowcaseInitialized) {
+    return;
+  }
+
+  window.__projectShowcaseInitialized = true;
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAll, { once: true });
+  } else {
+    initAll();
+  }
+};
+
+start();
