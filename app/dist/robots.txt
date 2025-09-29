@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://thao-portfolio.com/sitemap-index.xml

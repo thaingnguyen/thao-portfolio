@@ -10,9 +10,11 @@
     "check:palette": "rg \"#[0-9a-fA-F]{3,6}\" src/components"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
     "@tailwindcss/vite": "^4.1.13",
     "astro": "^5.13.7",
     "astro-icon": "^1.1.5",
+    "astro-robots-txt": "^1.0.0",
     "embla-carousel": "^8.6.0",
     "tailwindcss": "^4.1.13"
   }
