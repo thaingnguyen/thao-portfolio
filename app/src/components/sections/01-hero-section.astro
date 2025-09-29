@@ -2,39 +2,41 @@
 import { Image } from 'astro:assets';
 import headshot from "../../images/headshot.png";
 ---
-<header class="hero-section relative flex flex-col md:flex-row h-[80vh] bg-surface-alt">
-  {/* Left Panel: Client / Performance */}
-  <div
-    id="client-link-hero"
-    class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200 slide-in-left"
-  >
-    <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
-      Campaigns that <br /> Perform
-    </h1>
-  </div>
+<div class="relative">
+  <header class="hero-section relative flex flex-col md:flex-row h-[80vh] bg-surface-alt overflow-x-hidden overflow-y-hidden">
+    {/* Left Panel: Client / Performance */}
+    <div
+      id="client-link-hero"
+      class="split-panel performance-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-white via-lime-100 to-lime-200 slide-in-left"
+    >
+      <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-primary text-center leading-tight transition-transform duration-300 ease-in-out">
+        Campaigns that <br /> Perform
+      </h1>
+    </div>
 
-  {/* Right Panel: Agency / Inspiration */}
-  <div
-    id="agency-link-hero"
-    class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white slide-in-right"
-  >
-    <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
-      Creatives that <br /> Inspire
-    </h1>
-  </div>
+    {/* Right Panel: Agency / Inspiration */}
+    <div
+      id="agency-link-hero"
+      class="split-panel inspiration-side w-full md:w-1/2 h-1/2 md:h-full flex items-center justify-center transition-all duration-200 ease-out relative overflow-hidden cursor-pointer p-8 bg-gradient-to-br from-pink-200 via-pink-100 to-white slide-in-right"
+    >
+      <h1 class="split-headline text-5xl md:text-6xl font-black text-accent-secondary text-center leading-tight transition-transform duration-300 ease-in-out">
+        Creatives that <br /> Inspire
+      </h1>
+    </div>
 
-  {/* Immersive Headshot */}
-  <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-1/2 md:top-4/6 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
-    <div class="headshot-animate slide-in-top flex items-center justify-center">
-      <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-80">
-        <Image
-          src={headshot}
-          alt="Thao Nguyen"
-          class="relative h-full w-full rounded-full object-cover shadow-2xl shadow-black/20"
-        />
+    {/* Immersive Headshot */}
+    <div class="hero-centerpiece pointer-events-none absolute left-1/2 top-1/2 md:top-4/6 z-10 flex -translate-x-1/2 -translate-y-1/2 items-center justify-center px-4">
+      <div class="headshot-animate slide-in-top flex items-center justify-center">
+        <div class="relative mx-auto aspect-square w-48 sm:w-60 md:w-80">
+          <Image
+            src={headshot}
+            alt="Thao Nguyen"
+            class="relative h-full w-full rounded-full object-cover shadow-2xl shadow-black/20"
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </header>
 
   <!-- Bouncing Arrow -->
   <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 z-20">
@@ -42,7 +44,7 @@ import headshot from "../../images/headshot.png";
       <path d="M7 13l5 5 5-5M7 6l5 5 5-5"></path>
     </svg>
   </div>
-</header>
+</div>
 
 <script>
   const heroSection = document.querySelector('.hero-section');
